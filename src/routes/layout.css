@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@theme {
+	--color-brand-maroon: #7b121c;
+	--color-brand-black: #121212;
+	--color-brand-green: #25D366;
+	--color-brand-cream: #f8f5f2;
+	
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+	--font-display: 'Outfit', sans-serif;
+}
+
+@layer base {
+	body {
+		@apply bg-brand-cream text-brand-black antialiased;
+		font-family: var(--font-sans);
+	}
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: var(--font-display);
+		@apply font-bold tracking-tight;
+	}
+}
+
+.glass {
+	@apply bg-white/80 backdrop-blur-md border border-white/20;
+}
+
+.glass-dark {
+	@apply bg-black/40 backdrop-blur-xl border border-white/10;
+}
+
+.transition-smooth {
+	@apply transition-all duration-300 ease-in-out;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+	from { opacity: 0; transform: scale(0.95); }
+	to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+	animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.rounded-4xl {
+	border-radius: 2rem;
+}
