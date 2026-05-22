@@ -5,7 +5,7 @@ import type { Actions } from './$types';
 import { processAndUpload } from '$lib/server/s3';
 
 export const actions: Actions = {
-	default: async ({ request }) => {
+	default: async ({ request, url }) => {
 		const formData = await request.formData();
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
@@ -20,7 +20,7 @@ export const actions: Actions = {
 
 		try {
 			// 1. Upload cover image to S3
-			const imageUrl = await processAndUpload(imageFile);
+			const imageUrl = await processAndUpload(imageFile, url.origin);
 
 			// 2. Insert property with uploaded image URL
 			await db.insert(properties).values({
