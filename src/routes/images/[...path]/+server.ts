@@ -1,4 +1,4 @@
-import { getS3Client, getS3Bucket } from "$lib/server/s3";
+import { s3Client, S3_BUCKET } from "$lib/server/s3";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
@@ -10,22 +10,19 @@ export const GET: RequestHandler = async ({ params }) => {
         throw error(400, 'Image path is required');
     }
 
-    const bucket = getS3Bucket();
-    const client = getS3Client();
-
     try {
         const command = new GetObjectCommand({
-            Bucket: bucket,
+            Bucket: S3_BUCKET,
             Key: key,
         });
 
-        const response = await client.send(command);
+        const response = await s3Client.send(command);
 
         if (!response.Body) {
             throw error(404, 'Image not found');
         }
 
-        // Convert S3 stream to Uint8Array
+        // Convert S3 stream to Uint8Array (ensures compatibility across all Node/hosting environments)
         const byteArray = await (response.Body as any).transformToByteArray();
         return new Response(byteArray, {
             headers: {
@@ -40,8 +37,8 @@ export const GET: RequestHandler = async ({ params }) => {
             message: err.message || String(err),
             code: err.code || err.name,
             key: key,
-            bucket: bucket,
-            endpoint: client.config.endpoint ? 'configured' : 'not configured'
+            bucket: S3_BUCKET,
+            endpoint: s3Client.config.endpoint ? 'configured' : 'not configured'
         }), {
             status: 500,
             headers: {
