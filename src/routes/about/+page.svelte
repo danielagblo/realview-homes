@@ -34,11 +34,11 @@
 	}}
 />
 
-<div class="min-h-screen bg-white pt-32 pb-20">
+<div class="min-h-screen bg-white pt-24 lg:pt-32 pb-20 overflow-x-hidden">
 	<div class="container mx-auto px-6">
-		<!-- Hero Section (Fit to Screen) -->
-		<div class="mb-32 flex h-[calc(100vh-(--spacing(40)))] items-center">
-			<div class="grid w-full grid-cols-1 items-center gap-16 lg:grid-cols-2">
+		<!-- Hero Section (Responsive Layout) -->
+		<div class="min-h-0 h-auto lg:h-[calc(100vh-16rem)] lg:min-h-[500px] flex items-center mb-20 lg:mb-32 lg:pt-0">
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
 				<div class="relative z-10">
 					<div class="mb-6 inline-flex items-center gap-4">
 						<span class="h-px w-10 bg-brand-maroon"></span>
@@ -84,15 +84,15 @@
 				</div>
 				<div class="group relative">
 					<div
-						class="absolute -inset-10 rounded-full bg-brand-maroon/5 opacity-50 blur-[80px]"
+						class="absolute inset-0 lg:-inset-10 rounded-full bg-brand-maroon/5 opacity-50 blur-[80px]"
 					></div>
 					<div
 						class="relative overflow-hidden rounded-[3rem] border-4 border-brand-cream/50 shadow-2xl"
 					>
-						<img
-							src="/hero-home.png"
-							alt="Architectural Masterpiece"
-							class="h-[450px] w-full object-cover"
+						<img 
+							src="/hero-home.png" 
+							alt="Architectural Masterpiece" 
+							class="w-full h-[280px] sm:h-[380px] lg:h-[450px] object-cover"
 						/>
 					</div>
 					<div
@@ -240,7 +240,7 @@
 					>
 						<!-- Elegant Shadow & Border Frame -->
 						<div
-							class="transition-smooth absolute -inset-4 rounded-3xl bg-brand-maroon/5 opacity-50 blur-2xl group-hover:opacity-100"
+							class="transition-smooth absolute inset-0 lg:-inset-4 rounded-3xl bg-brand-maroon/5 opacity-50 blur-2xl group-hover:opacity-100"
 						></div>
 						<div
 							class="transition-smooth relative overflow-hidden rounded-3xl border border-brand-black/5 bg-white p-4 shadow-2xl hover:scale-[1.02] hover:border-brand-maroon/20"
