@@ -14,7 +14,7 @@ export const s3Client = new S3Client({
     forcePathStyle: true 
 });
 
-const S3_BUCKET = private_env.S3_BUCKET;
+export const S3_BUCKET = private_env.S3_BUCKET;
 
 /**
  * Processes a file (resize, convert to WebP) and uploads it to S3.
