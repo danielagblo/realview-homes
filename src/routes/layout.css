@@ -14,7 +14,7 @@
 
 @layer base {
 	body {
-		@apply bg-brand-cream text-brand-black antialiased;
+		@apply bg-brand-cream text-brand-black antialiased overflow-x-hidden;
 		font-family: var(--font-sans);
 	}
 	
