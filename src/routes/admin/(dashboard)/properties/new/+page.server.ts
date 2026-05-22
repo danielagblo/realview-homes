@@ -2,6 +2,7 @@ import { db } from '$lib/server/db';
 import { properties } from '$lib/server/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
+import { processAndUpload } from '$lib/server/s3';
 
 export const actions: Actions = {
 	default: async ({ request }) => {
@@ -13,11 +14,15 @@ export const actions: Actions = {
 		const beds = parseInt(formData.get('beds') as string);
 		const baths = parseInt(formData.get('baths') as string);
 		const sqft = parseInt(formData.get('sqft') as string);
-		const imageUrl = formData.get('imageUrl') as string;
+		const imageFile = formData.get('imageFile') as File;
 		const type = formData.get('type') as string;
 		const isFeatured = formData.get('isFeatured') === 'on';
 
 		try {
+			// 1. Upload cover image to S3
+			const imageUrl = await processAndUpload(imageFile);
+
+			// 2. Insert property with uploaded image URL
 			await db.insert(properties).values({
 				title,
 				description,
