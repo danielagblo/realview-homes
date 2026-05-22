@@ -24,11 +24,7 @@ export function getS3Bucket(): string {
     return private_env.S3_BUCKET || '';
 }
 
-/**
- * Processes a file (resize, convert to WebP) and uploads it to S3.
- * Returns the proxy URL.
- */
-export async function processAndUpload(file: File): Promise<string> {
+export async function processAndUpload(file: File, origin?: string): Promise<string> {
     const buffer = Buffer.from(await file.arrayBuffer());
     
     // Create a unique filename
@@ -58,7 +54,8 @@ export async function processAndUpload(file: File): Promise<string> {
     }));
 
     // 3. Return the Proxy URL
-    return `/api/images/${key}`;
+    const relativePath = `/api/images/${key}`;
+    return origin ? `${origin.replace(/\/$/, '')}${relativePath}` : relativePath;
 }
 
 /**
