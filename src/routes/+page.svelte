@@ -97,6 +97,19 @@
 						</span>
 					</div>
 				</div>
+
+				<!-- GHIREB Trust Badge -->
+				<div class="mt-8 pt-8 border-t border-brand-black/5">
+					<a href="/about#accreditation" class="inline-flex items-center gap-4 group p-4 bg-brand-cream/50 rounded-2xl hover:bg-brand-cream hover:shadow-md transition-smooth border border-brand-black/5">
+						<div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-brand-maroon shadow-sm border border-brand-maroon/10 group-hover:scale-105 transition-smooth">
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+						</div>
+						<div>
+							<span class="block text-[10px] font-bold text-brand-black uppercase tracking-wider group-hover:text-brand-maroon transition-smooth">GHIREB Certified Broker</span>
+							<span class="block text-[9px] text-brand-black/40 uppercase tracking-widest font-semibold mt-0.5">Sandra Apperkon Polo • PB97-25-63</span>
+						</div>
+					</a>
+				</div>
 			</div>
 
 			<div class="lg:w-1/2 relative">
