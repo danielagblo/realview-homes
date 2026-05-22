@@ -30,8 +30,20 @@ export const GET: RequestHandler = async ({ params }) => {
                 "Cache-Control": "public, max-age=31536000, immutable",
             },
         });
-    } catch (err) {
+    } catch (err: any) {
         console.error(`S3 Proxy Error for ${key}:`, err);
-        throw error(404, 'Image not found');
+        return new Response(JSON.stringify({
+            error: 'S3 Proxy Error',
+            message: err.message || String(err),
+            code: err.code || err.name,
+            key: key,
+            bucket: S3_BUCKET,
+            endpoint: s3Client.config.endpoint ? 'configured' : 'not configured'
+        }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     }
 };
