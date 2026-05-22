@@ -1,6 +1,5 @@
-import { s3Client } from "$lib/server/s3";
+import { s3Client, S3_BUCKET } from "$lib/server/s3";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { env } from '$env/dynamic/private';
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
@@ -13,7 +12,7 @@ export const GET: RequestHandler = async ({ params }) => {
 
     try {
         const command = new GetObjectCommand({
-            Bucket: env.S3_BUCKET,
+            Bucket: S3_BUCKET,
             Key: key,
         });
 
