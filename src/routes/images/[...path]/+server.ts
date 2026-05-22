@@ -6,7 +6,7 @@ import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ params }) => {
     const key = params.path;
-    
+
     if (!key) {
         throw error(400, 'Image path is required');
     }
@@ -23,9 +23,9 @@ export const GET: RequestHandler = async ({ params }) => {
             throw error(404, 'Image not found');
         }
 
-        // Convert S3 stream to a web-supported ReadableStream
-        // Note: SvelteKit's Response handles ReadableStream automatically
-        return new Response(response.Body as ReadableStream, {
+        // Convert S3 stream to Uint8Array
+        const byteArray = await (response.Body as any).transformToByteArray();
+        return new Response(byteArray, {
             headers: {
                 "Content-Type": response.ContentType || "image/webp",
                 "Cache-Control": "public, max-age=31536000, immutable",
