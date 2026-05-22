@@ -12,7 +12,7 @@
 	<meta name="description" content="Explore our curated collection of luxury residential properties, prime lands, and premium architectural developments across Ghana." />
 </svelte:head>
 
-<div class="pt-32 pb-20 bg-brand-cream min-h-screen">
+<div class="pt-24 lg:pt-32 pb-20 bg-brand-cream min-h-screen">
 	<div class="container mx-auto px-6">
 		<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
 			<div>
