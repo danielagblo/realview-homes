@@ -68,26 +68,26 @@
 	<meta name="description" content="Explore our comprehensive real estate services including architectural design, luxury construction, and property management." />
 </svelte:head>
 
-<div class="relative h-screen overflow-hidden bg-brand-black flex shadow-2xl">
-	<!-- Left Side: Visual Statement (40%) -->
-	<div class="hidden lg:block w-[40%] h-full relative overflow-hidden">
+<div class="relative min-h-[calc(100vh-4rem)] lg:h-screen overflow-hidden bg-brand-black flex shadow-2xl">
+	<!-- Background Immersive Image for Mobile, Left-side split for Desktop -->
+	<div class="absolute inset-0 lg:relative lg:w-[40%] h-full overflow-hidden">
 		<img 
 			src="/images/services-hero-editorial.png" 
 			alt="Architectural Statement" 
-			class="w-full h-full object-cover"
+			class="w-full h-full object-cover opacity-20 lg:opacity-100"
 		/>
 		<div class="absolute inset-0 bg-brand-maroon/20 mix-blend-overlay"></div>
-		<div class="absolute inset-0 bg-linear-to-r from-transparent to-brand-black"></div>
+		<div class="absolute inset-0 bg-linear-to-t from-brand-black via-brand-black/90 to-brand-black/40 lg:bg-linear-to-r lg:from-transparent lg:to-brand-black"></div>
 		
 		<!-- Vertical Branding -->
-		<div class="absolute left-12 bottom-20 flex items-center gap-6 -rotate-90 origin-left">
+		<div class="absolute left-12 bottom-20 hidden lg:flex items-center gap-6 -rotate-90 origin-left">
 			<span class="w-16 h-px bg-brand-maroon"></span>
 			<span class="text-white/20 font-bold uppercase tracking-[1em] text-[8px]">RealView Signature</span>
 		</div>
 	</div>
 
 	<!-- Right Side: Content (60%) -->
-	<div class="flex-1 h-full relative flex items-center px-8 md:px-16 pt-24">
+	<div class="flex-1 min-h-[calc(100vh-4rem)] lg:h-full relative flex items-center px-6 md:px-16 pt-20 lg:pt-24 z-10">
 		<div class="relative z-10 max-w-3xl">
 			<div class="flex items-center gap-3 mb-8">
 				<span class="w-8 h-px bg-brand-maroon"></span>
@@ -125,7 +125,7 @@
 <!-- Services Breakdown -->
 <section class="bg-white">
 	{#each services as service, i}
-		<div id={service.id} class="py-32 border-b border-brand-black/5 last:border-0 overflow-hidden">
+		<div id={service.id} class="py-16 lg:py-32 border-b border-brand-black/5 last:border-0 overflow-hidden">
 			<div class="container mx-auto px-6">
 				<div class="flex flex-col {i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-20">
 					<!-- Content -->
@@ -165,12 +165,12 @@
 
 					<!-- Image -->
 					<div class="lg:w-1/2 relative group">
-						<div class="absolute -inset-4 bg-brand-maroon/5 blur-3xl rounded-[4rem] group-hover:bg-brand-maroon/10 transition-smooth"></div>
-						<div class="relative overflow-hidden rounded-[4rem] shadow-2xl border-8 border-brand-cream/50">
+						<div class="absolute inset-0 lg:-inset-4 bg-brand-maroon/5 blur-3xl rounded-[4rem] group-hover:bg-brand-maroon/10 transition-smooth"></div>
+						<div class="relative overflow-hidden rounded-[2.5rem] lg:rounded-[4rem] shadow-2xl border-4 lg:border-8 border-brand-cream/50">
 							<img 
 								src={service.image} 
 								alt={service.title} 
-								class="w-full h-[500px] object-cover group-hover:scale-105 transition-smooth"
+								class="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover group-hover:scale-105 transition-smooth"
 							/>
 							<div class="absolute inset-0 bg-linear-to-t from-brand-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-smooth flex items-end p-12">
 								<p class="text-white text-sm font-medium italic">Commitment to {service.title} excellence.</p>
