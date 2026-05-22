@@ -11,7 +11,7 @@
 	<meta name="description" content="Reach out to RealView Homes for premium architectural planning, luxury construction, and property consultations in Ghana." />
 </svelte:head>
 
-<div class="pt-32 pb-20 bg-brand-cream min-h-screen">
+<div class="pt-24 lg:pt-32 pb-20 bg-brand-cream min-h-screen">
 	<div class="container mx-auto px-6">
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
 			<div>
