@@ -11,12 +11,8 @@
 		: 'glass py-3 shadow-sm text-brand-black'}">
 	<div class="container mx-auto px-6 flex justify-between items-center">
 		<a href="/" class="flex items-center gap-3 group z-50">
-			<!-- Logo wraps in a small white container if on transparent homepage to guarantee contrast, or stays clean on white background -->
-			<div class="bg-white/90 p-1.5 rounded-xl transition-smooth shadow-sm group-hover:scale-105"
-				class:bg-white={!isHome || scrolled || mobileMenuOpen}
-				class:shadow-lg={!isHome || scrolled || mobileMenuOpen}>
-				<img src="/RVC.png" alt="RealView Homes Logo" class="h-9 w-auto" />
-			</div>
+			<!-- Logo without white wrapper for a cleaner look -->
+			<img src="/RVC.png" alt="RealView Homes Logo" class="h-9 w-auto" />
 		</a>
 
 		<!-- Desktop Navigation -->
