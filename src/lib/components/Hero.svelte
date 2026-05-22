@@ -34,59 +34,15 @@
 			Tailored excellence for those who demand the extraordinary.
 		</p>
 
-		<!-- Massive Glassmorphism Search/CTA -->
-		<form 
-			action="/properties"
-			method="GET"
-			class="w-full max-w-4xl mx-auto glass-dark p-2 md:p-3 rounded-full shadow-2xl flex flex-col md:flex-row items-center gap-2 animate-slide-up" 
-			style="animation-delay: 0.8s;"
-		>
-			<!-- Area Selector -->
-			<div class="flex-1 flex items-center gap-4 px-6 py-3 md:border-r border-white/5 text-left w-full">
-				<div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-brand-maroon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-					</svg>
-				</div>
-				<div class="flex-1 relative group">
-					<span class="block text-[8px] font-bold text-white/30 uppercase tracking-widest mb-0.5">Explore Area</span>
-					<div class="relative">
-						<select name="location" class="bg-transparent text-sm font-bold text-white/90 outline-none w-full appearance-none cursor-pointer pr-8 border-none p-0 focus:ring-0">
-							<option value="" class="bg-brand-black text-white">All Locations</option>
-							{#each locations as loc}
-								<option value={loc} class="bg-brand-black text-white">{loc}</option>
-							{/each}
-						</select>
-						<svg class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 text-white/30 pointer-events-none group-hover:text-brand-maroon transition-smooth" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
-					</div>
-				</div>
-			</div>
-			
-			<!-- Price Selector -->
-			<div class="flex-1 flex items-center gap-4 px-6 py-3 text-left w-full">
-				<div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-brand-maroon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-					</svg>
-				</div>
-				<div class="flex-1 relative group">
-					<span class="block text-[8px] font-bold text-white/30 uppercase tracking-widest mb-0.5">Budget</span>
-					<div class="relative">
-						<select name="maxPrice" class="bg-transparent text-sm font-bold text-white/90 outline-none w-full appearance-none cursor-pointer pr-8 border-none p-0 focus:ring-0">
-							<option value="" class="bg-brand-black text-white">Any Price</option>
-							{#each priceBuckets as bucket}
-								<option value={bucket.value} class="bg-brand-black text-white">{bucket.label}</option>
-							{/each}
-						</select>
-						<svg class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 text-white/30 pointer-events-none group-hover:text-brand-maroon transition-smooth" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"/></svg>
-					</div>
-				</div>
-			</div>
-
-			<button type="submit" class="w-full md:w-auto bg-brand-maroon text-white px-10 py-5 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-brand-black transition-smooth shadow-xl shadow-brand-maroon/20 whitespace-nowrap">
-				Find My Home
-			</button>
-		</form>
+		<!-- Sleek CTA Buttons -->
+		<div class="flex flex-col sm:flex-row items-center gap-4 animate-slide-up" style="animation-delay: 0.8s;">
+			<a href="/properties" class="bg-brand-maroon text-white px-10 py-5 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-brand-black transition-smooth shadow-xl shadow-brand-maroon/20">
+				Explore Properties
+			</a>
+			<a href="/contact" class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-5 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-brand-maroon hover:border-brand-maroon transition-smooth">
+				Contact an Expert
+			</a>
+		</div>
 	</div>
 
 	<!-- Bottom Corner Accents (Moved to corners to avoid overlap) -->
