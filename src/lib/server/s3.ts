@@ -1,81 +1,76 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import sharp from "sharp";
-import { env as private_env } from '$env/dynamic/private';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import sharp from 'sharp';
+import { env } from '$env/dynamic/private';
 
-// Initialize S3 Client lazily at runtime
-let _s3Client: S3Client | null = null;
+// Helper to read env variables with fallback to process.env for absolute production reliability
+const getEnv = (key: string): string => {
+  return env[key] || (typeof process !== 'undefined' ? process.env[key] : '') || '';
+};
 
+export const s3Client = new S3Client({
+  region: getEnv('S3_REGION') || 'us-east-1',
+  endpoint: getEnv('S3_ENDPOINT') || undefined,
+  credentials: {
+    accessKeyId: getEnv('S3_ACCESS_KEY_ID'),
+    secretAccessKey: getEnv('S3_SECRET_ACCESS_KEY'),
+  },
+  forcePathStyle: true,
+});
+
+export const S3_BUCKET = getEnv('S3_BUCKET');
+
+// Getters for backwards compatibility
 export function getS3Client(): S3Client {
-    if (!_s3Client) {
-        _s3Client = new S3Client({
-            region: private_env.S3_REGION || 'us-east-1',
-            endpoint: private_env.S3_ENDPOINT,
-            credentials: {
-                accessKeyId: private_env.S3_ACCESS_KEY_ID || '',
-                secretAccessKey: private_env.S3_SECRET_ACCESS_KEY || '',
-            },
-            forcePathStyle: true 
-        });
-    }
-    return _s3Client;
+  return s3Client;
 }
 
 export function getS3Bucket(): string {
-    return private_env.S3_BUCKET || '';
+  return S3_BUCKET;
 }
 
-export async function processAndUpload(file: File, origin?: string): Promise<string> {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    
-    // Create a unique filename
-    const timestamp = Date.now();
-    const safeName = file.name.replace(/\s+/g, "-").toLowerCase();
-    const filename = `${timestamp}-${safeName.split('.')[0]}.webp`;
-    const key = `properties/${filename}`;
+// Upload and convert to WebP (matching guide naming)
+export async function uploadAndCompressToS3(file: File): Promise<string> {
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const filename = `${Date.now()}-${file.name.replace(/\s+/g, '-')}.webp`;
+  const key = `properties/${filename}`; // Maintain properties/ folder prefix for compatibility
 
-    // 1. Optimize with Sharp
-    const optimizedBuffer = await sharp(buffer)
-        .resize(1200, null, { 
-            withoutEnlargement: true,
-            fit: 'inside'
-        })
-        .webp({ quality: 80 })
-        .toBuffer();
+  // Optimize image
+  const optimizedBuffer = await sharp(buffer)
+    .resize(1200, null, { withoutEnlargement: true })
+    .webp({ quality: 80 })
+    .toBuffer();
 
-    // 2. Upload to S3
-    const client = getS3Client();
-    const bucket = getS3Bucket();
-    await client.send(new PutObjectCommand({
-        Bucket: bucket,
-        Key: key,
-        Body: optimizedBuffer,
-        ContentType: "image/webp",
-        ACL: 'private' 
+  await s3Client.send(new PutObjectCommand({
+    Bucket: S3_BUCKET,
+    Key: key,
+    Body: optimizedBuffer,
+    ContentType: 'image/webp',
+  }));
+
+  const baseUrl = getEnv('BASE_URL');
+  const relativePath = `/api/images/${key}`;
+  return baseUrl ? `${baseUrl.replace(/\/$/, '')}${relativePath}` : relativePath;
+}
+
+// Delete object from S3 (matching guide naming)
+export async function deleteFileFromS3(url: string): Promise<void> {
+  if (!url || !url.includes('/api/images/')) return;
+  
+  // Extract key (everything after /api/images/)
+  const key = url.split('/api/images/')[1];
+  if (!key) return;
+
+  try {
+    await s3Client.send(new DeleteObjectCommand({
+      Bucket: S3_BUCKET,
+      Key: key,
     }));
-
-    // 3. Return the Proxy URL
-    const relativePath = `/api/images/${key}`;
-    return origin ? `${origin.replace(/\/$/, '')}${relativePath}` : relativePath;
+    console.log(`Deleted S3 object: ${key}`);
+  } catch (err) {
+    console.error(`Failed to delete S3 object: ${key}`, err);
+  }
 }
 
-/**
- * Deletes an image from S3 given its proxy URL.
- */
-export async function deleteFromS3(proxyUrl: string): Promise<void> {
-    if (!proxyUrl || !proxyUrl.startsWith('/api/images/')) return;
-
-    // Extract the key from the proxy URL
-    const key = proxyUrl.replace('/api/images/', '');
-
-    try {
-        const client = getS3Client();
-        const bucket = getS3Bucket();
-        await client.send(new DeleteObjectCommand({
-            Bucket: bucket,
-            Key: key
-        }));
-        console.log(`Successfully deleted ${key} from S3`);
-    } catch (error) {
-        console.error(`Failed to delete ${key} from S3:`, error);
-    }
-}
+// Aliases for compatibility with the existing codebase
+export { uploadAndCompressToS3 as processAndUpload };
+export { deleteFileFromS3 as deleteFromS3 };
