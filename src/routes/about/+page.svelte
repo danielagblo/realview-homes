@@ -1,6 +1,4 @@
 <script lang="ts">
-	let showCertificateModal = $state(false);
-
 	const values = [
 		{
 			title: 'Uncompromising Precision',
@@ -28,11 +26,7 @@
 	/>
 </svelte:head>
 
-<svelte:window
-	onkeydown={(e) => {
-		if (e.key === 'Escape' && showCertificateModal) showCertificateModal = false;
-	}}
-/>
+
 
 <div class="min-h-screen bg-white pt-24 lg:pt-32 pb-20 overflow-x-hidden">
 	<div class="container mx-auto px-6">
@@ -184,136 +178,7 @@
 			</div>
 		</div>
 
-		<!-- Accreditation Section -->
-		<div id="accreditation" class="mb-40 scroll-mt-28 border-t border-brand-black/5 pt-24">
-			<div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
-				<div class="lg:col-span-7">
-					<div class="mb-6 inline-flex items-center gap-3">
-						<span class="h-px w-8 bg-brand-maroon"></span>
-						<span class="text-[10px] font-bold tracking-[0.5em] text-brand-maroon uppercase"
-							>Accredited & Certified</span
-						>
-					</div>
-					<h2 class="mb-8 text-4xl leading-[1.1] font-black text-brand-black md:text-5xl">
-						GHIREB Registered <br />
-						<span class="serif font-normal text-brand-maroon lowercase italic">Brokerage.</span>
-					</h2>
-					<p class="mb-6 text-lg leading-relaxed font-light text-brand-black/70">
-						RealView Homes is proud to be led by <strong>Sandra Apperkon Polo</strong>, a fully
-						certified and licensed professional agent under the
-						<strong>Ghana Institute of Real Estate Brokers (GHIREB)</strong>.
-					</p>
-					<p class="mb-8 text-base leading-relaxed font-light text-brand-black/50">
-						Registration number <strong>PB97-25-63</strong>. Our active GHIREB credentials guarantee
-						that all land sales, residential listings, and property management contracts through
-						RealView Homes are legally sound, certified, and completely litigation-free. We uphold
-						the absolute highest code of ethics, protecting your investments at every step.
-					</p>
-					<div class="flex items-center gap-4">
-						<div
-							class="flex h-12 w-12 items-center justify-center rounded-xl border border-brand-maroon/10 bg-white text-brand-maroon shadow-md"
-						>
-							<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-								><path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="1.5"
-									d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-								/></svg
-							>
-						</div>
-						<div>
-							<h4 class="text-sm font-bold tracking-widest text-brand-black uppercase">
-								Professional License No. 97 2024
-							</h4>
-							<p class="text-xs text-brand-black/40">
-								Granted permission to use the prefix PB as official designation.
-							</p>
-						</div>
-					</div>
-				</div>
 
-				<div class="flex justify-center lg:col-span-5">
-					<button
-						onclick={() => (showCertificateModal = true)}
-						class="group relative w-full max-w-sm cursor-zoom-in text-left focus:outline-none"
-					>
-						<!-- Elegant Shadow & Border Frame -->
-						<div
-							class="transition-smooth absolute inset-0 lg:-inset-4 rounded-3xl bg-brand-maroon/5 opacity-50 blur-2xl group-hover:opacity-100"
-						></div>
-						<div
-							class="transition-smooth relative overflow-hidden rounded-3xl border border-brand-black/5 bg-white p-4 shadow-2xl hover:scale-[1.02] hover:border-brand-maroon/20"
-						>
-							<img
-								src="/images/citation.jpg"
-								alt="GHIREB Certification of Membership"
-								class="h-[400px] w-full rounded-2xl bg-white object-contain"
-							/>
-							<div
-								class="transition-smooth absolute inset-0 flex items-center justify-center rounded-3xl bg-brand-black/40 opacity-0 group-hover:opacity-100"
-							>
-								<span
-									class="transition-smooth translate-y-4 transform rounded-full bg-white px-6 py-3 text-xs font-bold tracking-widest text-brand-black uppercase shadow-lg group-hover:translate-y-0"
-								>
-									View Certificate
-								</span>
-							</div>
-						</div>
-					</button>
-				</div>
-			</div>
-		</div>
-
-		<!-- Lightbox Modal -->
-		{#if showCertificateModal}
-			<div
-				class="animate-fade-in fixed inset-0 z-50 flex cursor-zoom-out items-center justify-center bg-brand-black/90 p-4 backdrop-blur-md md:p-10"
-				role="button"
-				tabindex="-1"
-				onclick={() => (showCertificateModal = false)}
-				onkeydown={(e) => {
-					if (e.key === 'Enter' || e.key === ' ') showCertificateModal = false;
-				}}
-			>
-				<button
-					onclick={() => (showCertificateModal = false)}
-					class="transition-smooth absolute top-6 right-6 z-50 cursor-pointer rounded-full bg-white/10 p-3 text-white/50 hover:bg-white/20 hover:text-white focus:outline-none"
-					aria-label="Close modal"
-				>
-					<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-						><path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M6 18L18 6M6 6l12 12"
-						/></svg
-					>
-				</button>
-
-				<!-- svelte-ignore a11y_click_events_have_key_events -->
-				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-				<div
-					class="animate-scale-in relative flex max-h-[85vh] w-full max-w-4xl cursor-default flex-col items-center justify-center"
-					onclick={(e) => e.stopPropagation()}
-					role="document"
-				>
-					<img
-						src="/images/citation.jpg"
-						alt="GHIREB Certification of Membership - Sandra Apperkon Polo"
-						class="max-h-[80vh] max-w-full rounded-lg border-4 border-white bg-white object-contain shadow-2xl"
-					/>
-					<div class="mt-4 text-center">
-						<p class="text-sm font-medium text-white">
-							GHIREB Certificate of Professional Membership
-						</p>
-						<p class="mt-1 text-xs text-white/40">
-							Sandra Apperkon Polo — Registration No. PB97-25-63
-						</p>
-					</div>
-				</div>
-			</div>
-		{/if}
 
 		<!-- Core Values (Lucid Light Version) -->
 		<div class="border-t border-brand-black/5 py-24">
