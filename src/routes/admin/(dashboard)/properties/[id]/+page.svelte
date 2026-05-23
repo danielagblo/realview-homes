@@ -79,6 +79,7 @@
 
 		<form 
 			method="POST" 
+			action="?/update"
 			enctype="multipart/form-data"
 			use:enhance={() => {
 				isSubmitting = true;
