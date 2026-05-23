@@ -1,0 +1,29 @@
+import { json } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
+
+export const GET: RequestHandler = async () => {
+    const diagnostics: any = {
+        timestamp: new Date().toISOString(),
+        envKeys: typeof process !== 'undefined' ? Object.keys(process.env).filter(k => k.includes('S3') || k.includes('BASE')) : [],
+        s3Import: 'not-attempted',
+        error: null
+    };
+
+    try {
+        diagnostics.s3Import = 'attempting';
+        const { s3Client, S3_BUCKET } = await import('$lib/server/s3');
+        diagnostics.s3Import = 'success';
+        diagnostics.bucket = S3_BUCKET;
+        diagnostics.region = await s3Client.config.region();
+        diagnostics.endpoint = s3Client.config.endpoint ? 'configured' : 'not configured';
+    } catch (err: any) {
+        diagnostics.s3Import = 'failed';
+        diagnostics.error = {
+            message: err.message,
+            stack: err.stack,
+            name: err.name
+        };
+    }
+
+    return json(diagnostics);
+};
