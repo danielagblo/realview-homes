@@ -4,7 +4,10 @@ import { env } from '$env/dynamic/private';
 
 // Helper to read env variables with fallback to process.env for absolute production reliability
 const getEnv = (key: string): string => {
-  return env[key] || (typeof process !== 'undefined' ? process.env[key] : '') || '';
+  // Retrieve raw value from either $env or process.env
+  const raw = env[key] || (typeof process !== 'undefined' ? process.env[key] : '') || '';
+  // Trim surrounding single or double quotes that may be present in Railway variables
+  return raw.replace(/^"(.*)"$/s, '$1').replace(/^'(.*)'$/s, '$1');
 };
 
 export const s3Client = new S3Client({
@@ -31,8 +34,10 @@ export function getS3Bucket(): string {
 // Upload and convert to WebP (matching guide naming)
 export async function uploadAndCompressToS3(file: File): Promise<string> {
   const buffer = Buffer.from(await file.arrayBuffer());
-  const filename = `${Date.now()}-${file.name.replace(/\s+/g, '-')}.webp`;
-  const key = `properties/${filename}`; // Maintain properties/ folder prefix for compatibility
+  // Build a safe filename: remove spaces, parentheses, and force lower‑case
+  const rawName = `${Date.now()}-${file.name.replace(/\s+/g, '-')}`;
+  const safeName = rawName.replace(/[()]/g, '').toLowerCase() + '.webp';
+  const key = `properties/${safeName}`; // Keep the properties/ prefix for backward compatibility
 
   // Optimize image
   const optimizedBuffer = await sharp(buffer)
