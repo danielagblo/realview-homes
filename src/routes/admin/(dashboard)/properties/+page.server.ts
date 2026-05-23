@@ -13,61 +13,6 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		const formData = await request.formData();
-		const title = formData.get('title') as string;
-		const description = formData.get('description') as string;
-		const price = parseFloat(formData.get('price') as string);
-		const location = formData.get('location') as string;
-		const beds = parseInt(formData.get('beds') as string);
-		const baths = parseInt(formData.get('baths') as string);
-		const sqft = parseInt(formData.get('sqft') as string);
-		const type = formData.get('type') as string;
-		const isFeatured = formData.get('isFeatured') === 'on';
-		const imageFile = formData.get('imageFile') as File;
-		const galleryFiles = formData.getAll('galleryFiles') as File[];
-
-		if (!imageFile || imageFile.size === 0) {
-			return fail(400, { message: 'Cover image is required' });
-		}
-
-		try {
-			// 1. Upload Cover Image
-			const imageUrl = await processAndUpload(imageFile);
-
-			// 2. Create Property Record
-			const [newProperty] = await db.insert(properties).values({
-				title,
-				description,
-				price,
-				location,
-				beds,
-				baths,
-				sqft,
-				imageUrl,
-				isFeatured,
-				type
-			}).returning();
-
-			// 3. Process and Upload Gallery Images
-			if (galleryFiles && galleryFiles.length > 0) {
-				for (const file of galleryFiles) {
-					if (file.size > 0) {
-						const galleryUrl = await processAndUpload(file);
-						await db.insert(propertyImages).values({
-							propertyId: newProperty.id,
-							url: galleryUrl
-						});
-					}
-				}
-			}
-
-			return { success: true };
-		} catch (error) {
-			console.error('Error creating property:', error);
-			return fail(500, { message: 'Failed to create property and upload images' });
-		}
-	},
 	delete: async ({ request }) => {
 		const formData = await request.formData();
 		const id = parseInt(formData.get('id') as string);
