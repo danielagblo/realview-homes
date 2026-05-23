@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { properties } from '$lib/server/db/schema';
+import { properties, propertyImages } from '$lib/server/db/schema';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { processAndUpload } from '$lib/server/s3';
@@ -17,13 +17,18 @@ export const actions: Actions = {
 		const imageFile = formData.get('imageFile') as File;
 		const type = formData.get('type') as string;
 		const isFeatured = formData.get('isFeatured') === 'on';
+		const galleryFiles = formData.getAll('galleryFiles') as File[];
+
+		if (!imageFile || imageFile.size === 0) {
+			return fail(400, { message: 'Cover image is required' });
+		}
 
 		try {
 			// 1. Upload cover image to S3
 			const imageUrl = await processAndUpload(imageFile);
 
 			// 2. Insert property with uploaded image URL
-			await db.insert(properties).values({
+			const [newProperty] = await db.insert(properties).values({
 				title,
 				description,
 				price,
@@ -34,7 +39,20 @@ export const actions: Actions = {
 				imageUrl,
 				type,
 				isFeatured
-			});
+			}).returning();
+
+			// 3. Process and Upload Gallery Images
+			if (galleryFiles && galleryFiles.length > 0) {
+				for (const file of galleryFiles) {
+					if (file.size > 0) {
+						const galleryUrl = await processAndUpload(file);
+						await db.insert(propertyImages).values({
+							propertyId: newProperty.id,
+							url: galleryUrl
+						});
+					}
+				}
+			}
 		} catch (error) {
 			console.error('Error creating property:', error);
 			return fail(500, { message: 'Could not create property' });
