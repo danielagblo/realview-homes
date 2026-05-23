@@ -83,5 +83,23 @@ export const actions: Actions = {
 		}
 
 		throw redirect(303, '/admin/properties');
+	},
+	deleteImage: async ({ request, params }) => {
+		const id = parseInt(params.id);
+		const formData = await request.formData();
+		const imageId = parseInt(formData.get('imageId') as string);
+
+		try {
+			const [image] = await db.select().from(propertyImages).where(eq(propertyImages.id, imageId)).limit(1);
+			if (image && image.propertyId === id) {
+				await deleteFromS3(image.url);
+				await db.delete(propertyImages).where(eq(propertyImages.id, imageId));
+				return { success: true };
+			}
+			return fail(400, { message: 'Image not found or does not belong to this property' });
+		} catch (err) {
+			console.error('Delete image error:', err);
+			return fail(500, { message: 'Failed to delete gallery image' });
+		}
 	}
 };
