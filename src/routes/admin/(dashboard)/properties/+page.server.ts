@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db';
-import { properties, propertyImages } from '$lib/server/db/schema';
+import { properties, propertyImages, bookings } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { fail } from '@sveltejs/kit';
 import { processAndUpload, deleteFromS3 } from '$lib/server/s3';
@@ -78,15 +78,18 @@ export const actions: Actions = {
 			const galleryImagesList = await db.select().from(propertyImages).where(eq(propertyImages.propertyId, id));
 			
 			if (property) {
-				// 2. Delete main image from S3
+				// 2. Delete associated bookings
+				await db.delete(bookings).where(eq(bookings.propertyId, id));
+
+				// 3. Delete main image from S3
 				await deleteFromS3(property.imageUrl);
 				
-				// 3. Delete all gallery images from S3
+				// 4. Delete all gallery images from S3
 				for (const img of galleryImagesList) {
 					await deleteFromS3(img.url);
 				}
 				
-				// 4. Delete from Database (Cascade will handle propertyImages records if set up, but we'll be safe)
+				// 5. Delete from Database
 				await db.delete(properties).where(eq(properties.id, id));
 			}
 			
