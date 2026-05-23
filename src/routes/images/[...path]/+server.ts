@@ -11,12 +11,28 @@ export const GET: RequestHandler = async ({ params }) => {
     }
 
     try {
-        const command = new GetObjectCommand({
-            Bucket: S3_BUCKET,
-            Key: key,
-        });
+        // Normalize the incoming key to match the safe filenames we store
+// 1. Decode URI components
+let normalizedKey = decodeURIComponent(key);
+// 2. Remove parentheses
+normalizedKey = normalizedKey.replace(/[()]/g, '');
+// 3. Convert to lower‑case
+normalizedKey = normalizedKey.toLowerCase();
+// 4. Trim any duplicate slashes
+normalizedKey = normalizedKey.replace(/\/+/g, '/');
 
-        const response = await s3Client.send(command);
+// Try the normalized key first
+let command = new GetObjectCommand({ Bucket: S3_BUCKET, Key: normalizedKey });
+let response;
+try {
+  response = await s3Client.send(command);
+} catch (e) {
+  // If not found, fall back to the original key (in case it was stored that way)
+  console.warn(`Normalized key not found (${normalizedKey}), trying original key ${key}`);
+  command = new GetObjectCommand({ Bucket: S3_BUCKET, Key: key });
+  response = await s3Client.send(command);
+}
+
 
         if (!response.Body) {
             throw error(404, 'Image not found');
