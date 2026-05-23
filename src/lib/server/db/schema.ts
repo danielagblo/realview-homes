@@ -30,7 +30,7 @@ export const propertyImages = pgTable('property_images', {
 
 export const bookings = pgTable('bookings', {
 	id: serial('id').primaryKey(),
-	propertyId: integer('property_id').references(() => properties.id),
+	propertyId: integer('property_id').references(() => properties.id, { onDelete: 'cascade' }),
 	clientName: text('client_name').notNull(),
 	clientEmail: text('client_email').notNull(),
 	clientPhone: text('client_phone').notNull(),
