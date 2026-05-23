@@ -21,7 +21,7 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ request, params }) => {
+	update: async ({ request, params }) => {
 		const id = parseInt(params.id);
 		const formData = await request.formData();
 		const title = formData.get('title') as string;
