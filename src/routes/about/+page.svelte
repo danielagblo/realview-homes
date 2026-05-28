@@ -89,11 +89,48 @@
 							class="w-full h-[280px] sm:h-[380px] lg:h-[450px] object-cover"
 						/>
 					</div>
-					<div
-						class="absolute -right-6 -bottom-6 hidden max-w-[200px] rounded-3xl bg-brand-black p-6 shadow-2xl md:block"
-					>
-						<p class="text-[11px] font-light text-white/60 italic">
-							"Our mission is to create spaces that inspire and endure."
+				</div>
+			</div>
+		</div>
+
+		<!-- Vision & Mission Section -->
+		<div class="mb-40">
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+				<div class="lg:col-span-5">
+					<div class="mb-6 inline-flex items-center gap-3">
+						<span class="h-px w-8 bg-brand-maroon"></span>
+						<span class="text-[10px] font-bold tracking-[0.5em] text-brand-maroon uppercase"
+							>Our Purpose</span
+						>
+					</div>
+					<h2 class="text-4xl leading-[1.1] font-black text-brand-black md:text-5xl uppercase mb-6">
+						Vision & <br />
+						<span class="serif text-brand-maroon lowercase italic font-normal">Mission</span>
+					</h2>
+					<p class="leading-relaxed font-light text-brand-black/60">
+						We are committed to elevating the standard of real estate in Ghana, building landscapes of luxury, sustainability, and trust.
+					</p>
+				</div>
+				<div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
+					<!-- Vision Card -->
+					<div class="relative group overflow-hidden rounded-3xl border border-brand-maroon/10 bg-brand-cream/30 p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-maroon/5">
+						<div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-brand-maroon/5 transition-transform duration-500 group-hover:scale-150"></div>
+						<span class="mb-4 inline-flex items-center justify-center rounded-xl bg-brand-maroon/10 px-3 py-1 text-[10px] font-bold tracking-widest text-brand-maroon uppercase">
+							Our Vision
+						</span>
+						<p class="text-2xl font-black leading-tight text-brand-black serif italic">
+							“Creating elegant living for everyone”
+						</p>
+					</div>
+
+					<!-- Mission Card -->
+					<div class="relative group overflow-hidden rounded-3xl border border-brand-black/5 bg-brand-black/[0.02] p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-black/5">
+						<div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-brand-black/[0.02] transition-transform duration-500 group-hover:scale-150"></div>
+						<span class="mb-4 inline-flex items-center justify-center rounded-xl bg-brand-black/10 px-3 py-1 text-[10px] font-bold tracking-widest text-brand-black uppercase">
+							Our Mission
+						</span>
+						<p class="text-lg leading-snug font-medium text-brand-black/80">
+							Building and delivering elegant properties with comfort, quality, and trust.
 						</p>
 					</div>
 				</div>
