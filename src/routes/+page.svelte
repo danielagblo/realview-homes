@@ -5,26 +5,68 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const services = [
+	const services: {
+		id: string;
+		title: string;
+		subtitle: string;
+		desc: string;
+		features: string[];
+		image: string;
+		accent: string;
+		icon: string;
+	}[] = [
 		{
-			title: 'Architectural Planning',
-			desc: 'Bespoke blueprints that balance contemporary aesthetics with sustainable functionality, tailored for the modern landscape.',
-			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" /></svg>`
+			id: 'land-sales',
+			title: 'Land Sales',
+			subtitle: 'Prime land acquisition across Ghana.',
+			desc: 'We offer curated listings of premium land parcels for development, ensuring clear titles and optimal locations.',
+			features: ['Location scouting', 'Title verification', 'Investment analysis'],
+			image: '/images/service-land.png',
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C8.134 2 5 5.134 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.866-3.134-7-7-7z"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>`,
+			accent: 'brand-maroon'
 		},
 		{
-			title: 'Luxury Construction',
-			desc: 'Precision engineering and world-class building services using premium materials to create lasting landmarks.',
-			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M4.5 21h4.5m10.5-17.505S18.335 12 12 12s-8.25-8.46-8.25-8.46m16.5 0c0 .498-.407.9-.9.9s-.9-.402-.9-.9.407-.9.9-.9.9.402.9.9ZM4.5 3.545c0 .498.407.9.9.9s.9-.402.9-.9-.407-.9-.9-.9-.9.402-.9.9Z" /></svg>`
+			id: 'house-rentals-sales',
+			title: 'House Rentals & Sales',
+			subtitle: 'Find your next home or investment property.',
+			desc: 'Comprehensive listings of rental and sale properties, with virtual tours and personalized matching.',
+			features: ['Rental management', 'Sale listings', 'Virtual tours'],
+			image: '/images/service-house.png',
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9.75V6a1 1 0 011-1h16a1 1 0 011 1v13.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 14.25V6"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v6m-4-3h8"/></svg>`,
+			accent: 'brand-black'
 		},
 		{
-			title: 'Property Brokerage',
-			desc: 'Seamless real estate transactions with a focus on high-value investments and exclusive residential properties.',
-			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>`
+			id: 'property-management',
+			title: 'Property Management',
+			subtitle: 'Ensuring your investment thrives.',
+			desc: 'Our end-to-end management services ensure your investment remains impeccable while delivering consistent high-yield returns.',
+			features: [
+				'Tenant Sourcing & Screening',
+				'Rent Collection & Financial Reporting',
+				'Routine Maintenance & Repairs',
+				'Security & Facility Oversight',
+				'Renovation & Refurbishment'
+			],
+			image:
+				'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2069&auto=format&fit=crop',
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 9h6M9 12h6M9 15h6M5 6h14a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1z"/></svg>`,
+			accent: 'brand-black'
 		},
 		{
-			title: 'Interior Design',
-			desc: 'Curated interiors that evoke emotion and elegance, blending local artistry with international design standards.',
-			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m-6-10a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM12 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /></svg>`
+			id: 'architecture-design',
+			title: 'Architecture Design & Building Construction',
+			subtitle: 'Visionary blueprints and elite construction.',
+			desc: 'From concept to completion, we deliver bespoke architectural designs and premium construction services.',
+			features: [
+				'Conceptual design',
+				'3D visualization',
+				'Structural engineering',
+				'Sustainability audits',
+				'Interior planning'
+			],
+			image: '/images/service-architecture.png',
+			icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a1 1 0 001 1h16a1 1 0 001-1V7m-9 0v12"/></svg>`,
+			accent: 'brand-maroon'
 		}
 	];
 
@@ -215,11 +257,42 @@
 					Redefining the <br />
 					<span class="serif font-normal text-brand-maroon lowercase italic">Art of Living.</span>
 				</h2>
-				<p class="mb-12 max-w-xl text-lg leading-relaxed text-brand-black/60">
-					At RealView Homes, we believe architecture is more than just structure—it's a canvas for
-					human experience. We merge traditional Ghanaian warmth with global modernism to create
-					spaces that are as functional as they are breathtaking.
-				</p>
+
+				<div class="mb-12 grid max-w-2xl grid-cols-1 gap-6 md:grid-cols-2">
+					<!-- Vision Card -->
+					<div
+						class="group relative overflow-hidden rounded-3xl border border-brand-maroon/10 bg-brand-cream/30 p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-maroon/5"
+					>
+						<div
+							class="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-brand-maroon/5 transition-transform duration-500 group-hover:scale-150"
+						></div>
+						<span
+							class="mb-4 inline-flex items-center justify-center rounded-xl bg-brand-maroon/10 px-3 py-1 text-[10px] font-bold tracking-widest text-brand-maroon uppercase"
+						>
+							Our Vision
+						</span>
+						<p class="serif text-2xl leading-tight font-black text-brand-black italic">
+							“Creating elegant living for everyone”
+						</p>
+					</div>
+
+					<!-- Mission Card -->
+					<div
+						class="group relative overflow-hidden rounded-3xl border border-brand-black/5 bg-brand-black/[0.02] p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-black/5"
+					>
+						<div
+							class="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-brand-black/[0.02] transition-transform duration-500 group-hover:scale-150"
+						></div>
+						<span
+							class="mb-4 inline-flex items-center justify-center rounded-xl bg-brand-black/10 px-3 py-1 text-[10px] font-bold tracking-widest text-brand-black uppercase"
+						>
+							Our Mission
+						</span>
+						<p class="text-lg leading-snug font-medium text-brand-black/80">
+							Building and delivering elegant properties with comfort, quality, and trust.
+						</p>
+					</div>
+				</div>
 
 				<div class="grid grid-cols-2 gap-12 border-t border-brand-black/5 pt-12">
 					<div>
@@ -238,37 +311,6 @@
 							Luxury Homes <br />Delivered
 						</span>
 					</div>
-				</div>
-
-				<!-- GHIREB Trust Badge -->
-				<div class="mt-8 border-t border-brand-black/5 pt-8">
-					<a
-						href="#accreditation"
-						class="group transition-smooth inline-flex items-center gap-4 rounded-2xl border border-brand-black/5 bg-brand-cream/50 p-4 hover:bg-brand-cream hover:shadow-md"
-					>
-						<div
-							class="transition-smooth flex h-10 w-10 items-center justify-center rounded-xl border border-brand-maroon/10 bg-white text-brand-maroon shadow-sm group-hover:scale-105"
-						>
-							<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-								><path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-								/></svg
-							>
-						</div>
-						<div>
-							<span
-								class="transition-smooth block text-[10px] font-bold tracking-wider text-brand-black uppercase group-hover:text-brand-maroon"
-								>GHIREB Certified Broker</span
-							>
-							<span
-								class="mt-0.5 block text-[9px] font-semibold tracking-widest text-brand-black/40 uppercase"
-								>Sandra Apperkon Polo • PB97-25-63</span
-							>
-						</div>
-					</a>
 				</div>
 			</div>
 
@@ -336,7 +378,7 @@
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:w-1/2">
 				{#each services as service}
 					<a
-						href="/services#{service.title.split(' ')[0].toLowerCase()}"
+						href="/services#{service.id}"
 						class="group relative block overflow-hidden rounded-[2.5rem] border border-brand-black/5 bg-white p-8 shadow-xl shadow-brand-black/5 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-maroon/10"
 					>
 						<div
