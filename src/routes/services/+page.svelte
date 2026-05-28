@@ -42,7 +42,8 @@
 				'Market Valuation Reports',
 				'Exclusive Property Showings'
 			],
-			image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop',
+			image:
+				'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop',
 			accent: 'brand-maroon'
 		},
 		{
@@ -57,7 +58,8 @@
 				'Security & Facility Oversight',
 				'Renovation & Refurbishment'
 			],
-			image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2069&auto=format&fit=crop',
+			image:
+				'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2069&auto=format&fit=crop',
 			accent: 'brand-black'
 		}
 	];
@@ -65,59 +67,34 @@
 
 <svelte:head>
 	<title>Our Services | RealView Homes</title>
-	<meta name="description" content="Explore our comprehensive real estate services including architectural design, luxury construction, and property management." />
+	<meta
+		name="description"
+		content="Explore our comprehensive real estate services including architectural design, luxury construction, and property management."
+	/>
 </svelte:head>
 
-<div class="relative min-h-[calc(100vh-4rem)] lg:h-screen overflow-hidden bg-brand-black flex shadow-2xl">
-	<!-- Background Immersive Image for Mobile, Left-side split for Desktop -->
-	<div class="absolute inset-0 lg:relative lg:w-[40%] h-full overflow-hidden">
-		<img 
-			src="/images/services-hero-editorial.png" 
-			alt="Architectural Statement" 
-			class="w-full h-full object-cover opacity-20 lg:opacity-100"
-		/>
-		<div class="absolute inset-0 bg-brand-maroon/20 mix-blend-overlay"></div>
-		<div class="absolute inset-0 bg-linear-to-t from-brand-black via-brand-black/90 to-brand-black/40 lg:bg-linear-to-r lg:from-transparent lg:to-brand-black"></div>
-		
-		<!-- Vertical Branding -->
-		<div class="absolute left-12 bottom-20 hidden lg:flex items-center gap-6 -rotate-90 origin-left">
-			<span class="w-16 h-px bg-brand-maroon"></span>
-			<span class="text-white/20 font-bold uppercase tracking-[1em] text-[8px]">RealView Signature</span>
-		</div>
-	</div>
+<div class=" px-6 py-10 pt-24 md:px-16">
+	<div class="max-w-3xl">
+		<h2 class="mb-4 text-3xl font-black tracking-tighter text-gray-900 md:text-4xl">
+			THE ART OF
+			<span class="font-normal text-brand-maroon lowercase italic">precision.</span>
+		</h2>
 
-	<!-- Right Side: Content (60%) -->
-	<div class="flex-1 min-h-[calc(100vh-4rem)] lg:h-full relative flex items-center px-6 md:px-16 pt-20 lg:pt-24 z-10">
-		<div class="relative z-10 max-w-3xl">
-			<div class="flex items-center gap-3 mb-8">
-				<span class="w-8 h-px bg-brand-maroon"></span>
-				<span class="text-brand-maroon font-bold uppercase tracking-[0.6em] text-[10px]">Expertise & Services</span>
-			</div>
-			
-			<h1 class="text-5xl md:text-7xl font-black text-white leading-[0.95] tracking-tighter mb-10">
-				<span class="block">THE ART OF</span>
-				<span class="text-brand-maroon italic serif lowercase font-normal">precision.</span>
-			</h1>
-			
-			<div class="border-l-2 border-brand-maroon/30 pl-8 max-w-2xl">
-				<p class="text-white/90 text-xl md:text-2xl leading-snug font-light mb-8 italic serif">
-					Crafting environments that transcend the ordinary.
-				</p>
-				<p class="text-white/40 text-base md:text-lg leading-relaxed font-light">
-					A unified ecosystem for the most discerning lifestyles, merging 
-					architectural purity with master-class construction.
-				</p>
-				
-				<div class="mt-12 flex items-center gap-6">
-					<a href="#architecture" class="bg-brand-maroon text-white px-8 py-3.5 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white hover:text-brand-black transition-all duration-500 shadow-xl shadow-brand-maroon/20">
-						Discover More
-					</a>
-					<div class="flex items-center gap-3 animate-pulse opacity-30">
-						<div class="w-1 h-1 rounded-full bg-white"></div>
-						<span class="text-white text-[8px] uppercase tracking-[0.4em]">Scroll</span>
-					</div>
-				</div>
-			</div>
+		<div class="border-l-2 border-brand-maroon/30 pl-5">
+			<p class="serif mb-3 text-base font-light text-gray-700 italic">
+				Crafting environments that transcend the ordinary.
+			</p>
+			<p class="mb-6 text-sm font-light text-gray-500">
+				A unified ecosystem for the most discerning lifestyles, merging architectural purity with
+				master-class construction.
+			</p>
+
+			<a
+				href="#architecture"
+				class="inline-block rounded-full bg-brand-maroon px-5 py-2 text-[10px] font-bold tracking-widest text-white uppercase transition-all duration-500 hover:bg-gray-800 hover:text-white"
+			>
+				Discover More
+			</a>
 		</div>
 	</div>
 </div>
@@ -125,55 +102,86 @@
 <!-- Services Breakdown -->
 <section class="bg-white">
 	{#each services as service, i}
-		<div id={service.id} class="py-16 lg:py-32 border-b border-brand-black/5 last:border-0 overflow-hidden">
+		<div
+			id={service.id}
+			class="overflow-hidden border-b border-brand-black/5 py-16 last:border-0 lg:py-32"
+		>
 			<div class="container mx-auto px-6">
-				<div class="flex flex-col {i % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-20">
+				<div
+					class="flex flex-col {i % 2 === 0
+						? 'lg:flex-row'
+						: 'lg:flex-row-reverse'} items-center gap-20"
+				>
 					<!-- Content -->
 					<div class="lg:w-1/2">
-						<div class="inline-flex items-center gap-3 mb-8">
-							<span class="w-10 h-px bg-brand-maroon/30"></span>
-							<span class="text-brand-maroon font-bold uppercase tracking-[0.3em] text-[10px]">Service {i + 1}</span>
+						<div class="mb-8 inline-flex items-center gap-3">
+							<span class="h-px w-10 bg-brand-maroon/30"></span>
+							<span class="text-[10px] font-bold tracking-[0.3em] text-brand-maroon uppercase"
+								>Service {i + 1}</span
+							>
 						</div>
-						<h2 class="text-4xl md:text-5xl font-black text-brand-black mb-4">
+						<h2 class="mb-4 text-4xl font-black text-brand-black md:text-5xl">
 							{service.title}
 						</h2>
-						<p class="text-brand-maroon font-bold text-lg mb-8 italic serif">
+						<p class="serif mb-8 text-lg font-bold text-brand-maroon italic">
 							{service.subtitle}
 						</p>
-						<p class="text-brand-black/60 text-lg leading-relaxed mb-10">
+						<p class="mb-10 text-lg leading-relaxed text-brand-black/60">
 							{service.desc}
 						</p>
-						
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							{#each service.features as feature}
 								<div class="flex items-center gap-3">
-									<div class="w-2 h-2 rounded-full bg-brand-maroon"></div>
+									<div class="h-2 w-2 rounded-full bg-brand-maroon"></div>
 									<span class="text-sm font-bold text-brand-black/80">{feature}</span>
 								</div>
 							{/each}
 						</div>
 
 						<div class="mt-12">
-							<a href="/contact" class="inline-flex items-center gap-3 bg-brand-black text-white px-8 py-4 rounded-full hover:bg-brand-maroon transition-smooth font-bold uppercase tracking-widest text-[10px]">
+							<a
+								href="/contact"
+								class="transition-smooth inline-flex items-center gap-3 rounded-full bg-brand-black px-8 py-4 text-[10px] font-bold tracking-widest text-white uppercase hover:bg-brand-maroon"
+							>
 								Enquire about this service
-								<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-4 w-4"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M14 5l7 7m0 0l-7 7m7-7H3"
+									/>
 								</svg>
 							</a>
 						</div>
 					</div>
 
 					<!-- Image -->
-					<div class="lg:w-1/2 relative group">
-						<div class="absolute inset-0 lg:-inset-4 bg-brand-maroon/5 blur-3xl rounded-[4rem] group-hover:bg-brand-maroon/10 transition-smooth"></div>
-						<div class="relative overflow-hidden rounded-[2.5rem] lg:rounded-[4rem] shadow-2xl border-4 lg:border-8 border-brand-cream/50">
-							<img 
-								src={service.image} 
-								alt={service.title} 
-								class="w-full h-[300px] sm:h-[400px] lg:h-[500px] object-cover group-hover:scale-105 transition-smooth"
+					<div class="group relative lg:w-1/2">
+						<div
+							class="transition-smooth absolute inset-0 rounded-[4rem] bg-brand-maroon/5 blur-3xl group-hover:bg-brand-maroon/10 lg:-inset-4"
+						></div>
+						<div
+							class="relative overflow-hidden rounded-[2.5rem] border-4 border-brand-cream/50 shadow-2xl lg:rounded-[4rem] lg:border-8"
+						>
+							<img
+								src={service.image}
+								alt={service.title}
+								class="transition-smooth h-[300px] w-full object-cover group-hover:scale-105 sm:h-[400px] lg:h-[500px]"
 							/>
-							<div class="absolute inset-0 bg-linear-to-t from-brand-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-smooth flex items-end p-12">
-								<p class="text-white text-sm font-medium italic">Commitment to {service.title} excellence.</p>
+							<div
+								class="transition-smooth absolute inset-0 flex items-end bg-linear-to-t from-brand-black/60 to-transparent p-12 opacity-0 group-hover:opacity-100"
+							>
+								<p class="text-sm font-medium text-white italic">
+									Commitment to {service.title} excellence.
+								</p>
 							</div>
 						</div>
 					</div>
@@ -184,20 +192,24 @@
 </section>
 
 <!-- Final CTA -->
-<section class="py-12 bg-brand-cream relative overflow-hidden">
+<section class="relative overflow-hidden bg-brand-cream py-12">
 	<div class="container mx-auto px-6">
-		<div class="bg-brand-black p-8 md:p-10 relative overflow-hidden shadow-2xl text-center max-w-3xl mx-auto border-t-2 border-brand-maroon">
+		<div
+			class="relative mx-auto max-w-3xl overflow-hidden border-t-2 border-brand-maroon bg-brand-black p-8 text-center shadow-2xl md:p-10"
+		>
 			<div class="absolute inset-0 bg-brand-maroon/5 opacity-20"></div>
-			<div class="relative z-10 max-w-xl mx-auto">
-				<h2 class="text-3xl md:text-4xl font-black text-white mb-4 uppercase tracking-tighter">
-					Ready to start <span class="text-brand-maroon italic serif lowercase font-normal">your vision?</span>
+			<div class="relative z-10 mx-auto max-w-xl">
+				<h2 class="mb-4 text-3xl font-black tracking-tighter text-white uppercase md:text-4xl">
+					Ready to start <span class="serif font-normal text-brand-maroon lowercase italic"
+						>your vision?</span
+					>
 				</h2>
-				<p class="text-white/40 text-xs md:text-sm mb-6 leading-relaxed">
+				<p class="mb-6 text-xs leading-relaxed text-white/40 md:text-sm">
 					From blueprint to masterpiece, our team brings your architectural dreams to life.
 				</p>
 				<a
 					href="/contact"
-					class="inline-block bg-brand-maroon text-white px-8 py-3 rounded-full font-bold uppercase tracking-widest text-[9px] shadow-lg shadow-brand-maroon/20 hover:scale-105 transition-all duration-500"
+					class="inline-block rounded-full bg-brand-maroon px-8 py-3 text-[9px] font-bold tracking-widest text-white uppercase shadow-lg shadow-brand-maroon/20 transition-all duration-500 hover:scale-105"
 				>
 					Book a Consultation
 				</a>
