@@ -1,56 +1,28 @@
 <script lang="ts">
 	const services = [
 		{
-			id: 'architecture',
-			title: 'Architectural Planning',
-			subtitle: 'Visionary blueprints for modern life.',
-			desc: 'Our design philosophy is rooted in the belief that every building should tell a story. We create bespoke blueprints that balance contemporary aesthetics with sustainable functionality, specifically tailored for the diverse Ghanaian landscape.',
-			features: [
-				'Conceptual Site Development',
-				'3D Architectural Visualization',
-				'Structural Engineering Coordination',
-				'Sustainability & Energy Audits',
-				'Interior Spatial Planning'
-			],
-			image: '/images/service-architectural.png',
+			id: 'land-sales',
+			title: 'Land Sales',
+			subtitle: 'Prime land acquisition across Ghana.',
+			desc: 'We offer curated listings of premium land parcels for development, ensuring clear titles and optimal locations.',
+			features: ['Location scouting', 'Title verification', 'Investment analysis'],
+			image: '/images/service-land.png',
 			accent: 'brand-maroon'
 		},
 		{
-			id: 'construction',
-			title: 'Luxury Construction',
-			subtitle: 'Building the landmarks of tomorrow.',
-			desc: 'Precision engineering meets world-class craftsmanship. We manage the entire building lifecycle, ensuring that every detail—from the foundation to the finishing—is executed to the highest international standards using premium materials.',
-			features: [
-				'Full-Scale Project Management',
-				'Quality Material Sourcing',
-				'Structural Integrity Testing',
-				'Smart Home Integration',
-				'Landscape & Hardscape Construction'
-			],
-			image: '/images/service-construction.png',
+			id: 'house-rentals-sales',
+			title: 'House Rentals & Sales',
+			subtitle: 'Find your next home or investment property.',
+			desc: 'Comprehensive listings of rental and sale properties, with virtual tours and personalized matching.',
+			features: ['Rental management', 'Sale listings', 'Virtual tours'],
+			image: '/images/service-house.png',
 			accent: 'brand-black'
 		},
 		{
-			id: 'brokerage',
-			title: 'Property Brokerage',
-			subtitle: 'Exclusive access to prime real estate.',
-			desc: 'We provide direct access to verified, prime litigation-free lands and luxury residential properties across Ghana’s fastest-growing hubs. Our brokerage service is built on transparency, legal rigor, and client trust.',
-			features: [
-				'Prime Land Acquisition',
-				'Investment Portfolio Consulting',
-				'Legal & Documentation Support',
-				'Market Valuation Reports',
-				'Exclusive Property Showings'
-			],
-			image:
-				'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop',
-			accent: 'brand-maroon'
-		},
-		{
-			id: 'management',
+			id: 'property-management',
 			title: 'Property Management',
 			subtitle: 'Ensuring your investment thrives.',
-			desc: 'Our end-to-end management services ensure your investment remains impeccable while delivering consistent high-yield returns. We handle everything from tenant relations to preventative maintenance.',
+			desc: 'Our end-to-end management services ensure your investment remains impeccable while delivering consistent high-yield returns.',
 			features: [
 				'Tenant Sourcing & Screening',
 				'Rent Collection & Financial Reporting',
@@ -61,6 +33,21 @@
 			image:
 				'https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=2069&auto=format&fit=crop',
 			accent: 'brand-black'
+		},
+		{
+			id: 'architecture-design',
+			title: 'Architecture Design & Building Construction',
+			subtitle: 'Visionary blueprints and elite construction.',
+			desc: 'From concept to completion, we deliver bespoke architectural designs and premium construction services.',
+			features: [
+				'Conceptual design',
+				'3D visualization',
+				'Structural engineering',
+				'Sustainability audits',
+				'Interior planning'
+			],
+			image: '/images/service-architectural.png',
+			accent: 'brand-maroon'
 		}
 	];
 </script>
