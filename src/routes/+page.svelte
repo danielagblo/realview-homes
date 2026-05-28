@@ -71,7 +71,10 @@
 />
 
 <!-- Accreditation Section -->
-<section id="accreditation" class="scroll-mt-28 border-b border-brand-black/5 py-24 bg-white relative overflow-hidden">
+<section
+	id="accreditation"
+	class="relative scroll-mt-28 overflow-hidden border-b border-brand-black/5 bg-white py-24"
+>
 	<div class="container mx-auto px-6">
 		<div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
 			<div class="lg:col-span-7">
@@ -93,8 +96,8 @@
 				<p class="mb-8 text-base leading-relaxed font-light text-brand-black/50">
 					Registration number <strong>PB97-25-63</strong>. Our active GHIREB credentials guarantee
 					that all land sales, residential listings, and property management contracts through
-					RealView Homes are legally sound, certified, and completely litigation-free. We uphold
-					the absolute highest code of ethics, protecting your investments at every step.
+					RealView Homes are legally sound, certified, and completely litigation-free. We uphold the
+					absolute highest code of ethics, protecting your investments at every step.
 				</p>
 				<div class="flex items-center gap-4">
 					<div
@@ -127,7 +130,7 @@
 				>
 					<!-- Elegant Shadow & Border Frame -->
 					<div
-						class="transition-smooth absolute inset-0 lg:-inset-4 rounded-3xl bg-brand-maroon/5 opacity-50 blur-2xl group-hover:opacity-100"
+						class="transition-smooth absolute inset-0 rounded-3xl bg-brand-maroon/5 opacity-50 blur-2xl group-hover:opacity-100 lg:-inset-4"
 					></div>
 					<div
 						class="transition-smooth relative overflow-hidden rounded-3xl border border-brand-black/5 bg-white p-4 shadow-2xl hover:scale-[1.02] hover:border-brand-maroon/20"
@@ -152,109 +155,25 @@
 		</div>
 	</div>
 </section>
-
-<!-- Brand Philosophy & Stats Section -->
-<section class="py-20 bg-white relative overflow-hidden">
-	<div class="container mx-auto px-6">
-		<div class="flex flex-col lg:flex-row items-center gap-20">
-			<div class="lg:w-1/2">
-				<div class="inline-flex items-center gap-3 mb-8">
-					<span class="w-10 h-px bg-brand-maroon/30"></span>
-					<span class="text-brand-maroon font-bold uppercase tracking-[0.3em] text-[10px]"
-						>Our Philosophy</span
-					>
-				</div>
-				<h2 class="text-4xl md:text-6xl font-black text-brand-black mb-10 leading-[1.1]">
-					Redefining the <br />
-					<span class="text-brand-maroon italic serif lowercase font-normal">Art of Living.</span>
-				</h2>
-				<p class="text-brand-black/60 text-lg leading-relaxed mb-12 max-w-xl">
-					At RealView Homes, we believe architecture is more than just structure—it's a canvas for
-					human experience. We merge traditional Ghanaian warmth with global modernism to create 
-					spaces that are as functional as they are breathtaking.
-				</p>
-				
-				<div class="grid grid-cols-2 gap-12 border-t border-brand-black/5 pt-12">
-					<div>
-						<span class="block text-4xl font-black text-brand-maroon mb-2">12+</span>
-						<span class="text-[10px] font-bold text-brand-black/40 uppercase tracking-widest leading-tight block">
-							Years of <br/>Architectural Excellence
-						</span>
-					</div>
-					<div>
-						<span class="block text-4xl font-black text-brand-maroon mb-2">450+</span>
-						<span class="text-[10px] font-bold text-brand-black/40 uppercase tracking-widest leading-tight block">
-							Luxury Homes <br/>Delivered
-						</span>
-					</div>
-				</div>
-
-				<!-- GHIREB Trust Badge -->
-				<div class="mt-8 pt-8 border-t border-brand-black/5">
-					<a href="#accreditation" class="inline-flex items-center gap-4 group p-4 bg-brand-cream/50 rounded-2xl hover:bg-brand-cream hover:shadow-md transition-smooth border border-brand-black/5">
-						<div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-brand-maroon shadow-sm border border-brand-maroon/10 group-hover:scale-105 transition-smooth">
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
-						</div>
-						<div>
-							<span class="block text-[10px] font-bold text-brand-black uppercase tracking-wider group-hover:text-brand-maroon transition-smooth">GHIREB Certified Broker</span>
-							<span class="block text-[9px] text-brand-black/40 uppercase tracking-widest font-semibold mt-0.5">Sandra Apperkon Polo • PB97-25-63</span>
-						</div>
-					</a>
-				</div>
-			</div>
-
-			<div class="lg:w-1/2 relative">
-				<div class="absolute -top-10 -left-10 w-40 h-40 bg-brand-cream rounded-full -z-10 blur-3xl opacity-50"></div>
-				<div class="grid grid-cols-2 gap-4">
-					<div class="space-y-4 pt-12">
-						<img 
-							src="/images/philosophy-1.png" 
-							alt="Modern Interior" 
-							class="rounded-3xl shadow-2xl hover:scale-[1.03] transition-smooth h-64 w-full object-cover"
-						/>
-						<img 
-							src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop" 
-							alt="Architectural Detail" 
-							class="rounded-3xl shadow-2xl hover:scale-[1.03] transition-smooth h-48 w-full object-cover"
-						/>
-					</div>
-					<div class="space-y-4">
-						<img 
-							src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=2070&auto=format&fit=crop" 
-							alt="Luxury Exterior" 
-							class="rounded-3xl shadow-2xl hover:scale-[1.03] transition-smooth h-48 w-full object-cover"
-						/>
-						<img 
-							src="/images/philosophy-2.png" 
-							alt="Contemporary Design" 
-							class="rounded-3xl shadow-2xl hover:scale-[1.03] transition-smooth h-64 w-full object-cover"
-						/>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
 <!-- Featured Properties -->
-<section class="py-24 bg-brand-cream/10 relative">
+<section class="relative bg-brand-cream/10 py-24">
 	<div class="container mx-auto px-6">
-		<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+		<div class="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
 			<div class="max-w-xl">
-				<span class="text-brand-maroon font-bold uppercase tracking-widest text-xs mb-4 block"
+				<span class="mb-4 block text-xs font-bold tracking-widest text-brand-maroon uppercase"
 					>Our Best Offers</span
 				>
-				<h2 class="text-4xl md:text-5xl font-black text-brand-black mb-6 uppercase">
-					Featured <span class="text-brand-maroon italic serif lowercase">Properties</span>
+				<h2 class="mb-6 text-4xl font-black text-brand-black uppercase md:text-5xl">
+					Featured <span class="serif text-brand-maroon lowercase italic">Properties</span>
 				</h2>
-				<p class="text-brand-black/60 leading-relaxed">
+				<p class="leading-relaxed text-brand-black/60">
 					Explore our hand-picked properties. From luxury villas to cozy apartments, we have
 					something for everyone.
 				</p>
 			</div>
 			<a
 				href="/properties"
-				class="flex items-center gap-2 font-bold text-brand-maroon hover:gap-4 transition-all duration-300 border-b-2 border-brand-maroon/20 pb-1"
+				class="flex items-center gap-2 border-b-2 border-brand-maroon/20 pb-1 font-bold text-brand-maroon transition-all duration-300 hover:gap-4"
 			>
 				Browse all properties
 				<svg
@@ -274,59 +193,165 @@
 			</a>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+		<div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
 			{#each data.featuredProperties as property}
 				<PropertyCard {property} />
 			{/each}
 		</div>
 	</div>
 </section>
+<!-- Brand Philosophy & Stats Section -->
+<section class="relative overflow-hidden bg-white py-20">
+	<div class="container mx-auto px-6">
+		<div class="flex flex-col items-center gap-20 lg:flex-row">
+			<div class="lg:w-1/2">
+				<div class="mb-8 inline-flex items-center gap-3">
+					<span class="h-px w-10 bg-brand-maroon/30"></span>
+					<span class="text-[10px] font-bold tracking-[0.3em] text-brand-maroon uppercase"
+						>Our Philosophy</span
+					>
+				</div>
+				<h2 class="mb-10 text-4xl leading-[1.1] font-black text-brand-black md:text-6xl">
+					Redefining the <br />
+					<span class="serif font-normal text-brand-maroon lowercase italic">Art of Living.</span>
+				</h2>
+				<p class="mb-12 max-w-xl text-lg leading-relaxed text-brand-black/60">
+					At RealView Homes, we believe architecture is more than just structure—it's a canvas for
+					human experience. We merge traditional Ghanaian warmth with global modernism to create
+					spaces that are as functional as they are breathtaking.
+				</p>
+
+				<div class="grid grid-cols-2 gap-12 border-t border-brand-black/5 pt-12">
+					<div>
+						<span class="mb-2 block text-4xl font-black text-brand-maroon">12+</span>
+						<span
+							class="block text-[10px] leading-tight font-bold tracking-widest text-brand-black/40 uppercase"
+						>
+							Years of <br />Architectural Excellence
+						</span>
+					</div>
+					<div>
+						<span class="mb-2 block text-4xl font-black text-brand-maroon">450+</span>
+						<span
+							class="block text-[10px] leading-tight font-bold tracking-widest text-brand-black/40 uppercase"
+						>
+							Luxury Homes <br />Delivered
+						</span>
+					</div>
+				</div>
+
+				<!-- GHIREB Trust Badge -->
+				<div class="mt-8 border-t border-brand-black/5 pt-8">
+					<a
+						href="#accreditation"
+						class="group transition-smooth inline-flex items-center gap-4 rounded-2xl border border-brand-black/5 bg-brand-cream/50 p-4 hover:bg-brand-cream hover:shadow-md"
+					>
+						<div
+							class="transition-smooth flex h-10 w-10 items-center justify-center rounded-xl border border-brand-maroon/10 bg-white text-brand-maroon shadow-sm group-hover:scale-105"
+						>
+							<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+								><path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+								/></svg
+							>
+						</div>
+						<div>
+							<span
+								class="transition-smooth block text-[10px] font-bold tracking-wider text-brand-black uppercase group-hover:text-brand-maroon"
+								>GHIREB Certified Broker</span
+							>
+							<span
+								class="mt-0.5 block text-[9px] font-semibold tracking-widest text-brand-black/40 uppercase"
+								>Sandra Apperkon Polo • PB97-25-63</span
+							>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class="relative lg:w-1/2">
+				<div
+					class="absolute -top-10 -left-10 -z-10 h-40 w-40 rounded-full bg-brand-cream opacity-50 blur-3xl"
+				></div>
+				<div class="grid grid-cols-2 gap-4">
+					<div class="space-y-4 pt-12">
+						<img
+							src="/images/philosophy-1.png"
+							alt="Modern Interior"
+							class="transition-smooth h-64 w-full rounded-3xl object-cover shadow-2xl hover:scale-[1.03]"
+						/>
+						<img
+							src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop"
+							alt="Architectural Detail"
+							class="transition-smooth h-48 w-full rounded-3xl object-cover shadow-2xl hover:scale-[1.03]"
+						/>
+					</div>
+					<div class="space-y-4">
+						<img
+							src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?q=80&w=2070&auto=format&fit=crop"
+							alt="Luxury Exterior"
+							class="transition-smooth h-48 w-full rounded-3xl object-cover shadow-2xl hover:scale-[1.03]"
+						/>
+						<img
+							src="/images/philosophy-2.png"
+							alt="Contemporary Design"
+							class="transition-smooth h-64 w-full rounded-3xl object-cover shadow-2xl hover:scale-[1.03]"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
 
 <!-- Services Section -->
-<section class="py-20 bg-brand-cream/30 relative overflow-hidden">
+<section class="relative overflow-hidden bg-brand-cream/30 py-20">
 	<div class="container mx-auto px-6">
-		<div class="flex flex-col lg:flex-row items-center gap-16">
+		<div class="flex flex-col items-center gap-16 lg:flex-row">
 			<div class="lg:w-1/2">
-				<div class="inline-flex items-center gap-3 mb-6">
-					<span class="w-10 h-px bg-brand-maroon/30"></span>
-					<span class="text-brand-maroon font-bold uppercase tracking-[0.3em] text-[10px]"
+				<div class="mb-6 inline-flex items-center gap-3">
+					<span class="h-px w-10 bg-brand-maroon/30"></span>
+					<span class="text-[10px] font-bold tracking-[0.3em] text-brand-maroon uppercase"
 						>What we do</span
 					>
 				</div>
-				<h2 class="text-4xl md:text-6xl font-black text-brand-black mb-8 leading-tight">
+				<h2 class="mb-8 text-4xl leading-tight font-black text-brand-black md:text-6xl">
 					Comprehensive <br />
-					<span class="text-brand-maroon italic serif lowercase font-normal">Expertise.</span>
+					<span class="serif font-normal text-brand-maroon lowercase italic">Expertise.</span>
 				</h2>
-				<p class="text-brand-black/70 text-lg leading-relaxed mb-10">
+				<p class="mb-10 text-lg leading-relaxed text-brand-black/70">
 					We provide a full-service real estate ecosystem, merging architectural innovation with
 					master-class construction and management.
 				</p>
 				<button
-					class="bg-brand-black text-white px-10 py-5 rounded-full hover:bg-brand-maroon transition-all duration-300 font-bold uppercase tracking-widest text-xs"
+					class="rounded-full bg-brand-black px-10 py-5 text-xs font-bold tracking-widest text-white uppercase transition-all duration-300 hover:bg-brand-maroon"
 				>
 					Explore Services
 				</button>
 			</div>
 
-			<div class="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:w-1/2">
 				{#each services as service}
 					<a
 						href="/services#{service.title.split(' ')[0].toLowerCase()}"
-						class="group bg-white p-8 rounded-[2.5rem] shadow-xl shadow-brand-black/5 hover:shadow-2xl hover:shadow-brand-maroon/10 transition-all duration-500 border border-brand-black/5 relative overflow-hidden block"
+						class="group relative block overflow-hidden rounded-[2.5rem] border border-brand-black/5 bg-white p-8 shadow-xl shadow-brand-black/5 transition-all duration-500 hover:shadow-2xl hover:shadow-brand-maroon/10"
 					>
 						<div
-							class="w-14 h-14 bg-brand-cream rounded-2xl flex items-center justify-center text-brand-maroon mb-6 group-hover:bg-brand-maroon group-hover:text-white transition-colors duration-300 relative z-10"
+							class="relative z-10 mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-cream text-brand-maroon transition-colors duration-300 group-hover:bg-brand-maroon group-hover:text-white"
 						>
 							{@html service.icon}
 						</div>
 						<div class="relative z-10">
-							<h3 class="text-xl font-bold text-brand-black mb-3">{service.title}</h3>
-							<p class="text-brand-black/60 text-sm leading-relaxed">
+							<h3 class="mb-3 text-xl font-bold text-brand-black">{service.title}</h3>
+							<p class="text-sm leading-relaxed text-brand-black/60">
 								{service.desc}
 							</p>
 						</div>
 						<div
-							class="absolute top-0 right-0 w-32 h-32 bg-brand-maroon/5 rounded-bl-[4rem] -mr-12 -mt-12 group-hover:scale-125 transition-smooth"
+							class="transition-smooth absolute top-0 right-0 -mt-12 -mr-12 h-32 w-32 rounded-bl-[4rem] bg-brand-maroon/5 group-hover:scale-125"
 						></div>
 					</a>
 				{/each}
@@ -336,52 +361,52 @@
 </section>
 
 <!-- Process Section -->
-<section class="py-20 bg-white relative overflow-hidden">
+<section class="relative overflow-hidden bg-white py-20">
 	<div class="container mx-auto px-6">
-		<div class="flex flex-col lg:flex-row items-center gap-24">
-			<div class="lg:w-1/2 relative group">
+		<div class="flex flex-col items-center gap-24 lg:flex-row">
+			<div class="group relative lg:w-1/2">
 				<div
-					class="absolute -inset-4 bg-brand-maroon/5 blur-3xl rounded-full group-hover:bg-brand-maroon/10 transition-smooth"
+					class="transition-smooth absolute -inset-4 rounded-full bg-brand-maroon/5 blur-3xl group-hover:bg-brand-maroon/10"
 				></div>
 				<img
 					src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=2073&auto=format&fit=crop"
 					alt="Consultation"
-					class="relative rounded-[4rem] shadow-2xl border-8 border-brand-cream/50 group-hover:scale-[1.02] transition-smooth"
+					class="transition-smooth relative rounded-[4rem] border-8 border-brand-cream/50 shadow-2xl group-hover:scale-[1.02]"
 				/>
 				<!-- Floating Stat Overlay -->
 				<div
-					class="absolute -bottom-10 -right-10 bg-brand-black p-8 rounded-[2.5rem] shadow-2xl hidden md:block"
+					class="absolute -right-10 -bottom-10 hidden rounded-[2.5rem] bg-brand-black p-8 shadow-2xl md:block"
 				>
-					<span class="block text-4xl font-black text-white mb-1">100%</span>
-					<span class="text-[10px] font-bold text-white/40 uppercase tracking-widest"
+					<span class="mb-1 block text-4xl font-black text-white">100%</span>
+					<span class="text-[10px] font-bold tracking-widest text-white/40 uppercase"
 						>Client Satisfaction</span
 					>
 				</div>
 			</div>
 
 			<div class="lg:w-1/2">
-				<div class="inline-flex items-center gap-3 mb-8">
-					<span class="w-10 h-px bg-brand-maroon/30"></span>
-					<span class="text-brand-maroon font-bold uppercase tracking-[0.3em] text-[10px]"
+				<div class="mb-8 inline-flex items-center gap-3">
+					<span class="h-px w-10 bg-brand-maroon/30"></span>
+					<span class="text-[10px] font-bold tracking-[0.3em] text-brand-maroon uppercase"
 						>Seamless Experience</span
 					>
 				</div>
 
-				<h2 class="text-4xl md:text-5xl font-black text-brand-black mb-16 leading-tight">
+				<h2 class="mb-16 text-4xl leading-tight font-black text-brand-black md:text-5xl">
 					Your Journey to a <br />New <span class="text-brand-maroon">Home.</span>
 				</h2>
 
 				<div class="space-y-12">
 					{#each steps as item}
-						<div class="flex gap-8 group">
+						<div class="group flex gap-8">
 							<div
-								class="shrink-0 w-16 h-16 rounded-full border-2 border-brand-maroon/20 flex items-center justify-center text-xl font-black text-brand-maroon group-hover:bg-brand-maroon group-hover:text-white transition-smooth shadow-lg shadow-brand-maroon/5"
+								class="transition-smooth flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-brand-maroon/20 text-xl font-black text-brand-maroon shadow-lg shadow-brand-maroon/5 group-hover:bg-brand-maroon group-hover:text-white"
 							>
 								{item.step}
 							</div>
 							<div>
-								<h3 class="text-xl font-bold text-brand-black mb-3">{item.title}</h3>
-								<p class="text-brand-black/50 leading-relaxed max-w-md">
+								<h3 class="mb-3 text-xl font-bold text-brand-black">{item.title}</h3>
+								<p class="max-w-md leading-relaxed text-brand-black/50">
 									{item.desc}
 								</p>
 							</div>
@@ -394,30 +419,36 @@
 </section>
 
 <!-- Call to Action (Compact & Elegant) -->
-<section class="py-12 bg-brand-cream relative overflow-hidden">
+<section class="relative overflow-hidden bg-brand-cream py-12">
 	<div class="container mx-auto px-6 text-center">
-		<div class="bg-white p-8 md:p-16 relative overflow-hidden shadow-2xl border border-brand-maroon/10 max-w-5xl mx-auto rounded-[3rem]">
+		<div
+			class="relative mx-auto max-w-5xl overflow-hidden rounded-[3rem] border border-brand-maroon/10 bg-white p-8 shadow-2xl md:p-16"
+		>
 			<!-- Decorative Background Elements -->
-			<div class="absolute inset-0 bg-brand-maroon/2 pointer-events-none"></div>
-			
-			<div class="relative z-10 max-w-2xl mx-auto">
-				<h2 class="text-3xl md:text-5xl font-black text-brand-black mb-6 uppercase tracking-tighter leading-tight">
-					Find your <span class="text-brand-maroon italic serif lowercase font-normal">dream home</span>.
+			<div class="pointer-events-none absolute inset-0 bg-brand-maroon/2"></div>
+
+			<div class="relative z-10 mx-auto max-w-2xl">
+				<h2
+					class="mb-6 text-3xl leading-tight font-black tracking-tighter text-brand-black uppercase md:text-5xl"
+				>
+					Find your <span class="serif font-normal text-brand-maroon lowercase italic"
+						>dream home</span
+					>.
 				</h2>
-				<p class="text-slate-500 text-base md:text-lg mb-10 leading-relaxed font-medium">
-					Our experts are ready to guide you through every step of your journey. 
-					Experience the next level of luxury living.
+				<p class="mb-10 text-base leading-relaxed font-medium text-slate-500 md:text-lg">
+					Our experts are ready to guide you through every step of your journey. Experience the next
+					level of luxury living.
 				</p>
-				<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+				<div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
 					<a
 						href="/contact"
-						class="w-full sm:w-auto inline-block bg-brand-maroon text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] shadow-xl shadow-brand-maroon/20 hover:scale-105 transition-smooth"
+						class="transition-smooth inline-block w-full rounded-full bg-brand-maroon px-10 py-4 text-[10px] font-bold tracking-widest text-white uppercase shadow-xl shadow-brand-maroon/20 hover:scale-105 sm:w-auto"
 					>
 						Contact an Expert
 					</a>
 					<a
 						href="/properties"
-						class="w-full sm:w-auto inline-block bg-white text-brand-black border border-slate-200 px-10 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-slate-50 transition-smooth"
+						class="transition-smooth inline-block w-full rounded-full border border-slate-200 bg-white px-10 py-4 text-[10px] font-bold tracking-widest text-brand-black uppercase hover:bg-slate-50 sm:w-auto"
 					>
 						Browse Properties
 					</a>
@@ -466,12 +497,8 @@
 				class="max-h-[80vh] max-w-full rounded-lg border-4 border-white bg-white object-contain shadow-2xl"
 			/>
 			<div class="mt-4 text-center">
-				<p class="text-sm font-medium text-white">
-					GHIREB Certificate of Professional Membership
-				</p>
-				<p class="mt-1 text-xs text-white/40">
-					Sandra Apperkon Polo — Registration No. PB97-25-63
-				</p>
+				<p class="text-sm font-medium text-white">GHIREB Certificate of Professional Membership</p>
+				<p class="mt-1 text-xs text-white/40">Sandra Apperkon Polo — Registration No. PB97-25-63</p>
 			</div>
 		</div>
 	</div>
