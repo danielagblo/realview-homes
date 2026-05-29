@@ -18,6 +18,7 @@ export const actions: Actions = {
 		const type = formData.get('type') as string;
 		const isFeatured = formData.get('isFeatured') === 'on';
 		const galleryFiles = formData.getAll('galleryFiles') as File[];
+		const currency = (formData.get('currency') as string) || 'GHS';
 
 		if (!imageFile || imageFile.size === 0) {
 			return fail(400, { message: 'Cover image is required' });
@@ -38,7 +39,8 @@ export const actions: Actions = {
 				sqft,
 				imageUrl,
 				type,
-				isFeatured
+				isFeatured,
+				currency
 			}).returning();
 
 			// 3. Process and Upload Gallery Images
