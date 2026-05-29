@@ -9,14 +9,16 @@
 		sqft: number;
 		imageUrl: string;
 		type: string;
+		currency?: string;
 	}
 
 	let { property } = $props<{ property: Property }>();
 
 	const formatPrice = (price: number) => {
-		return new Intl.NumberFormat('en-GH', {
+		const curr = property.currency || 'GHS';
+		return new Intl.NumberFormat(curr === 'USD' ? 'en-US' : 'en-GH', {
 			style: 'currency',
-			currency: 'GHS',
+			currency: curr,
 			maximumFractionDigits: 0
 		}).format(price);
 	};
