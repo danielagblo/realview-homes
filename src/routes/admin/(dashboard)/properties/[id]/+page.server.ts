@@ -33,6 +33,7 @@ export const actions: Actions = {
 		const sqft = parseInt(formData.get('sqft') as string);
 		const type = formData.get('type') as string;
 		const isFeatured = formData.get('isFeatured') === 'on';
+		const currency = formData.get('currency') as string || 'GHS';
 
 		// 1. Handle Cover Image Replacement
 		const imageFile = formData.get('imageFile') as File;
@@ -62,7 +63,8 @@ export const actions: Actions = {
 				sqft,
 				imageUrl,
 				type,
-				isFeatured
+				isFeatured,
+				currency
 			}).where(eq(properties.id, id));
 
 			// 3. Process and Add New Gallery Images
