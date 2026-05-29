@@ -2,273 +2,486 @@
 	import { enhance } from '$app/forms';
 	import type { PageData, ActionData } from './$types';
 
-	let { data, form } = $props<{ data: PageData, form: ActionData }>();
+	let { data, form } = $props<{ data: PageData; form: ActionData }>();
 	const property = $derived(data.property);
-	const existingGallery = $derived(data.gallery);
+	const gallery = $derived(data.gallery);
 	let isSubmitting = $state(false);
 
-	let coverPreview = $state<string | null>(null);
-	let newGalleryPreviews = $state<string[]>([]);
+	const allImages = $derived([property.imageUrl, ...gallery.map((img: { url: string }) => img.url)]);
+	let activeImageIndex = $state(0);
+	let isLightboxOpen = $state(false);
 
-	const handleCoverChange = (e: Event) => {
-		const target = e.target as HTMLInputElement;
-		const file = target.files?.[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				coverPreview = e.target?.result as string;
-			};
-			reader.readAsDataURL(file);
-		} else {
-			coverPreview = null;
-		}
+	const toggleLightbox = () => (isLightboxOpen = !isLightboxOpen);
+
+	const nextImage = () => {
+		activeImageIndex = (activeImageIndex + 1) % allImages.length;
 	};
 
-	const handleGalleryChange = (e: Event) => {
-		const target = e.target as HTMLInputElement;
-		const files = target.files;
-		if (files) {
-			newGalleryPreviews = [];
-			Array.from(files).forEach(file => {
-				const reader = new FileReader();
-				reader.onload = (e) => {
-					newGalleryPreviews.push(e.target?.result as string);
-				};
-				reader.readAsDataURL(file);
-			});
-		} else {
-			newGalleryPreviews = [];
-		}
+	const prevImage = () => {
+		activeImageIndex = (activeImageIndex - 1 + allImages.length) % allImages.length;
 	};
-	let imageIdToDelete = $state<number | null>(null);
-	let deleteFormElement = $state<HTMLFormElement | null>(null);
 
-	const handleDeleteImage = (id: number) => {
-		if (confirm('Delete this gallery photo?')) {
-			imageIdToDelete = id;
-			queueMicrotask(() => {
-				deleteFormElement?.requestSubmit();
-			});
-		}
+	const handleKeydown = (e: KeyboardEvent) => {
+		if (!isLightboxOpen) return;
+		if (e.key === 'Escape') isLightboxOpen = false;
+		if (e.key === 'ArrowRight') nextImage();
+		if (e.key === 'ArrowLeft') prevImage();
+	};
+
+	const formatPrice = (price: number) => {
+		const curr = property.currency || 'GHS';
+		return new Intl.NumberFormat(curr === 'USD' ? 'en-US' : 'en-GH', {
+			style: 'currency',
+			currency: curr,
+			maximumFractionDigits: 0
+		}).format(price);
 	};
 </script>
 
 <svelte:head>
-	<title>Edit {property.title} | RealView Homes</title>
+	<title>{property.title} in {property.location} | RealView Homes</title>
+	<meta name="description" content="{property.description.substring(0, 160)}..." />
 </svelte:head>
 
-<div class="max-w-4xl mx-auto space-y-10 pb-20">
-	<div class="flex items-center gap-6">
-		<a href="/admin/properties" class="w-12 h-12 flex items-center justify-center bg-white border border-brand-black/5 rounded-2xl shadow-sm hover:bg-brand-black hover:text-white transition-smooth" aria-label="Back to properties list">
-			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-			</svg>
-		</a>
-		<div>
-			<h2 class="text-4xl font-display font-black text-brand-black tracking-tight">Edit Portfolio Item</h2>
-			<p class="text-brand-black/40 font-medium mt-1">Refine details for <span class="text-brand-maroon">{property.title}</span></p>
-		</div>
-	</div>
+<svelte:window onkeydown={handleKeydown} />
 
-	<div class="bg-white rounded-4xl shadow-2xl shadow-brand-black/5 border border-brand-black/5 p-8 md:p-12">
-		{#if form?.message}
-			<div class="mb-10 p-5 bg-rose-50 text-rose-600 rounded-3xl font-bold text-center border border-rose-100 animate-fade-in">
-				{form.message}
-			</div>
-		{/if}
-
-		<form 
-			method="POST" 
-			action="?/update"
-			enctype="multipart/form-data"
-			use:enhance={() => {
-				isSubmitting = true;
-				return async ({ update }) => {
-					isSubmitting = false;
-					update();
-				};
-			}}
-			class="grid grid-cols-1 md:grid-cols-2 gap-10"
+<div class="min-h-screen bg-white font-sans selection:bg-brand-maroon/10 selection:text-brand-maroon">
+	<div class="container mx-auto px-6 pt-28 pb-20">
+		<!-- Breadcrumbs (Refined) -->
+		<nav
+			class="mb-10 flex text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase"
+			aria-label="Breadcrumb"
 		>
-			<input type="hidden" name="currentImageUrl" value={property.imageUrl} />
+			<ol class="flex items-center space-x-4">
+				<li><a href="/" class="transition-smooth hover:text-brand-maroon">Home</a></li>
+				<li class="opacity-20">/</li>
+				<li>
+					<a href="/properties" class="transition-smooth hover:text-brand-maroon">Properties</a>
+				</li>
+				<li class="opacity-20">/</li>
+				<li class="text-brand-black">{property.title}</li>
+			</ol>
+		</nav>
 
-			<div class="md:col-span-2">
-				<label for="title" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Property Title</label>
-				<input type="text" id="title" name="title" value={property.title} class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-bold text-brand-black" required />
-			</div>
+		<div class="grid grid-cols-1 items-start gap-12 lg:grid-cols-5">
+			<!-- Left Column: Gallery & Details -->
+			<div class="space-y-12 lg:col-span-3">
+				<!-- Hero Image Section (Gallery Slider) -->
+				<div class="space-y-6">
+					<div class="relative overflow-hidden rounded-4xl border border-slate-100 shadow-2xl bg-brand-cream/10">
+						<div 
+							onclick={toggleLightbox}
+							onkeydown={(e) => e.key === 'Enter' && toggleLightbox()}
+							role="button"
+							tabindex="0"
+							class="relative h-[600px] w-full overflow-hidden group cursor-zoom-in"
+							aria-label="Open full-screen gallery"
+						>
+							{#key activeImageIndex}
+								<img 
+									src={allImages[activeImageIndex]} 
+									alt={property.title} 
+									class="h-full w-full object-cover animate-fade-in transition-all duration-700 group-hover:scale-105" 
+								/>
+							{/key}
+							
+							<div class="absolute inset-0 bg-brand-black/0 group-hover:bg-brand-black/10 transition-smooth"></div>
 
-			<div class="md:col-span-2">
-				<label for="description" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Detailed Description</label>
-				<textarea id="description" name="description" rows="5" class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-medium text-brand-black/70 resize-none" required>{property.description}</textarea>
-			</div>
+							<div class="absolute top-8 left-8 flex gap-3 pointer-events-none">
+								<span class="rounded-2xl bg-brand-maroon px-6 py-3 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-2xl shadow-brand-maroon/40 border border-white/10">
+									For {property.type}
+								</span>
+								<span class="rounded-2xl bg-brand-black px-6 py-3 text-[10px] font-black tracking-[0.2em] text-white uppercase shadow-2xl shadow-brand-black/20 border border-white/10">
+									{property.status}
+								</span>
+							</div>
 
-			<div class="grid grid-cols-3 gap-4">
-				<div class="col-span-1">
-					<label for="currency" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Currency</label>
-					<select id="currency" name="currency" class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-bold appearance-none cursor-pointer">
-						<option value="GHS" selected={property.currency === 'GHS' || !property.currency}>GHS (GH¢)</option>
-						<option value="USD" selected={property.currency === 'USD'}>USD ($)</option>
-					</select>
-				</div>
-				<div class="col-span-2">
-					<label for="price" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Valuation</label>
-					<input type="number" id="price" name="price" value={property.price} class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-black text-brand-maroon" required />
-				</div>
-			</div>
-
-			<div>
-				<label for="location" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Geographic Location</label>
-				<input type="text" id="location" name="location" value={property.location} class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-bold text-brand-black" required />
-			</div>
-
-			<div class="grid grid-cols-3 md:col-span-1 gap-4">
-				<div>
-					<label for="beds" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-2 text-center">Beds</label>
-					<input type="number" id="beds" name="beds" value={property.beds} class="w-full px-4 py-4 rounded-xl bg-brand-cream/30 border border-brand-black/5 text-center font-bold" required />
-				</div>
-				<div>
-					<label for="baths" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-2 text-center">Baths</label>
-					<input type="number" id="baths" name="baths" value={property.baths} class="w-full px-4 py-4 rounded-xl bg-brand-cream/30 border border-brand-black/5 text-center font-bold" required />
-				</div>
-				<div>
-					<label for="sqft" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-2 text-center">Sq Ft</label>
-					<input type="number" id="sqft" name="sqft" value={property.sqft} class="w-full px-4 py-4 rounded-xl bg-brand-cream/30 border border-brand-black/5 text-center font-bold" required />
-				</div>
-			</div>
-
-			<div>
-				<label for="type" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Listing Category</label>
-				<select id="type" name="type" class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-bold appearance-none cursor-pointer">
-					<option value="sale" selected={property.type === 'sale'}>Sale</option>
-					<option value="rental" selected={property.type === 'rental'}>Rental</option>
-				</select>
-			</div>
-
-			<div class="md:col-span-2">
-				<label for="coverImage" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Update Cover Photo</label>
-				<div class="relative group">
-					<input 
-						type="file" 
-						id="coverImage" 
-						name="imageFile" 
-						accept="image/*"
-						onchange={handleCoverChange}
-						class="hidden" 
-					/>
-					<label 
-						for="coverImage" 
-						class="flex flex-col items-center justify-center w-full h-80 border-2 border-dashed border-brand-black/5 rounded-4xl cursor-pointer hover:border-brand-maroon hover:bg-brand-cream/20 transition-smooth overflow-hidden shadow-inner bg-brand-cream/10"
-					>
-						{#if coverPreview}
-							<img src={coverPreview} alt="New Preview" class="w-full h-full object-cover" />
-						{:else}
-							<div class="relative w-full h-full flex items-center justify-center group">
-								<img src={property.imageUrl} alt="Current Cover" class="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-smooth" />
-								<div class="absolute inset-0 flex flex-col items-center justify-center bg-brand-black/10 group-hover:bg-brand-black/20 transition-smooth">
-									<svg class="w-12 h-12 mb-4 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-									<p class="text-white font-black uppercase tracking-widest drop-shadow-md">Click to Replace Cover</p>
+							<div class="absolute bottom-8 right-8 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-smooth">
+								<div class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl border border-white/30 text-white text-[10px] font-black uppercase tracking-widest">
+									View Gallery ({allImages.length})
 								</div>
 							</div>
-						{/if}
-					</label>
-				</div>
-			</div>
+						</div>
 
-			<div class="md:col-span-2 space-y-6">
-				<div>
-					<span class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-4">Current Gallery</span>
-					{#if existingGallery.length > 0}
-						<div class="grid grid-cols-3 md:grid-cols-6 gap-4">
-							{#each existingGallery as img}
-								<div class="aspect-square rounded-2xl overflow-hidden border border-brand-black/5 shadow-sm group relative">
-									<img src={img.url} alt="Gallery item" class="w-full h-full object-cover" />
-									<div class="absolute inset-0 bg-brand-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-smooth">
-										<button 
-											type="button" 
-											onclick={() => handleDeleteImage(img.id)}
-											class="bg-rose-600 hover:bg-rose-700 text-white p-3 rounded-full shadow-lg transition-smooth transform hover:scale-110 cursor-pointer"
-											title="Delete image"
-										>
-											<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-											</svg>
-										</button>
-									</div>
-								</div>
+						<!-- Slider Controls (Now outside the main trigger to avoid button nesting) -->
+						{#if allImages.length > 1}
+							<div class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-6 pointer-events-none">
+								<button 
+									type="button"
+									onclick={prevImage}
+									aria-label="Previous image"
+									class="pointer-events-auto w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-brand-black transition-smooth shadow-xl"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+								</button>
+								<button 
+									type="button"
+									onclick={nextImage}
+									aria-label="Next image"
+									class="pointer-events-auto w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-brand-black transition-smooth shadow-xl"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+								</button>
+							</div>
+						{/if}
+					</div>
+
+					<!-- Thumbnails Grid -->
+					{#if allImages.length > 1}
+						<div class="grid grid-cols-4 md:grid-cols-6 gap-4">
+							{#each allImages as img, i}
+								<button 
+									type="button"
+									onclick={() => activeImageIndex = i}
+									aria-label="View image {i + 1}"
+									class="aspect-square rounded-3xl overflow-hidden border-4 transition-smooth
+										{activeImageIndex === i ? 'border-brand-maroon shadow-lg shadow-brand-maroon/20' : 'border-transparent opacity-60 hover:opacity-100 hover:border-slate-200'}"
+								>
+									<img src={img} alt="Thumbnail {i + 1}" class="w-full h-full object-cover" />
+								</button>
 							{/each}
 						</div>
-					{:else}
-						<p class="text-xs font-medium text-brand-black/20 italic">No gallery images added yet.</p>
 					{/if}
 				</div>
 
-				<div>
-					<label for="galleryImages" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3 cursor-pointer">Add to Gallery</label>
-					<div class="relative group">
-						<input 
-							type="file" 
-							id="galleryImages" 
-							name="galleryFiles" 
-							accept="image/*"
-							multiple
-							onchange={handleGalleryChange}
-							class="hidden" 
-						/>
-						<label 
-							for="galleryImages" 
-							class="flex flex-col items-center justify-center w-full min-h-48 border-2 border-dashed border-brand-black/5 rounded-4xl cursor-pointer hover:border-brand-maroon hover:bg-brand-cream/20 transition-smooth p-6 shadow-inner bg-brand-cream/10"
+				<!-- Property Identity -->
+				<div class="space-y-6">
+					<div
+						class="flex flex-col justify-between gap-6 border-b border-slate-100 pb-8 md:flex-row md:items-end"
+					>
+						<div class="space-y-1">
+							<h1
+								class="text-2xl leading-tight font-black tracking-tighter text-brand-black md:text-3xl"
+							>
+								{property.title}
+							</h1>
+							<p class="flex items-center gap-2 text-sm font-medium text-slate-500">
+								<svg
+									class="h-4 w-4 text-brand-maroon"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="1.5"
+										d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+									/>
+								</svg>
+								{property.location}
+							</p>
+						</div>
+						<div class="text-right">
+							<span
+								class="mb-1 block text-[9px] font-bold tracking-widest text-brand-maroon uppercase"
+								>Market Value</span
+							>
+							<span class="text-3xl font-black text-brand-black">{formatPrice(property.price)}</span
+							>
+						</div>
+					</div>
+
+					<!-- Features Grid -->
+					<div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+						<div
+							class="flex flex-col items-center rounded-4xl border border-brand-maroon/5 bg-brand-cream/30 p-6 text-center"
 						>
-							{#if newGalleryPreviews.length > 0}
-								<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 w-full">
-									{#each newGalleryPreviews as preview}
-										<div class="aspect-square rounded-2xl overflow-hidden border border-brand-black/5 shadow-sm">
-											<img src={preview} alt="New Gallery Preview" class="w-full h-full object-cover" />
-										</div>
-									{/each}
-									<div class="aspect-square rounded-2xl border-2 border-dashed border-brand-black/10 flex items-center justify-center text-brand-black/20 group-hover:text-brand-maroon transition-smooth">
-										<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-									</div>
-								</div>
-							{:else}
-								<div class="flex flex-col items-center justify-center pt-5 pb-6">
-									<svg class="w-8 h-8 mb-4 text-brand-black/20 group-hover:text-brand-maroon transition-smooth" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-									<p class="mb-2 text-sm text-brand-black/40 font-medium"><span class="font-bold text-brand-black">Add More Photos</span></p>
-									<p class="text-[10px] text-brand-black/30 font-black uppercase tracking-widest italic">Select new files to expand the collection</p>
-								</div>
-							{/if}
-						</label>
+							<div class="mb-3 h-8 w-8 text-brand-maroon/40">
+								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="1.5"
+										d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+									/></svg
+								>
+							</div>
+							<span class="mb-1 text-[8px] font-bold tracking-widest text-slate-400 uppercase"
+								>Bedrooms</span
+							>
+							<span class="text-lg font-black text-brand-black">{property.beds}</span>
+						</div>
+						<div
+							class="flex flex-col items-center rounded-4xl border border-brand-maroon/5 bg-brand-cream/30 p-6 text-center"
+						>
+							<div class="mb-3 h-8 w-8 text-brand-maroon/40">
+								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="1.5"
+										d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+									/></svg
+								>
+							</div>
+							<span class="mb-1 text-[8px] font-bold tracking-widest text-slate-400 uppercase"
+								>Bathrooms</span
+							>
+							<span class="text-lg font-black text-brand-black">{property.baths}</span>
+						</div>
+						<div
+							class="flex flex-col items-center rounded-4xl border border-brand-maroon/5 bg-brand-cream/30 p-6 text-center"
+						>
+							<div class="mb-3 h-8 w-8 text-brand-maroon/40">
+								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="1.5"
+										d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+									/></svg
+								>
+							</div>
+							<span class="mb-1 text-[8px] font-bold tracking-widest text-slate-400 uppercase"
+								>Square Feet</span
+							>
+							<span class="text-lg font-black text-brand-black">{property.sqft}</span>
+						</div>
+						<div
+							class="flex flex-col items-center rounded-4xl border border-brand-maroon/5 bg-brand-cream/30 p-6 text-center"
+						>
+							<div class="mb-3 h-8 w-8 text-brand-maroon/40">
+								<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="1.5"
+										d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+									/></svg
+								>
+							</div>
+							<span class="mb-1 text-[8px] font-bold tracking-widest text-slate-400 uppercase"
+								>Type</span
+							>
+							<span class="text-lg font-black text-brand-black capitalize">{property.type}</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Description -->
+				<div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+					<div class="md:col-span-4">
+						<h3 class="text-xl font-black tracking-tighter text-brand-black uppercase">
+							Description
+						</h3>
+					</div>
+					<div class="space-y-4 md:col-span-8">
+						<p class="text-base leading-relaxed text-slate-600">
+							{property.description}
+						</p>
 					</div>
 				</div>
 			</div>
 
-			<div class="flex items-center gap-4 bg-brand-cream/30 p-6 rounded-2xl border border-brand-black/5">
-				<input type="checkbox" name="isFeatured" id="isFeatured" checked={property.isFeatured} class="w-6 h-6 rounded-lg border-brand-black/10 text-brand-maroon focus:ring-brand-maroon transition-smooth cursor-pointer" />
-				<label for="isFeatured" class="text-sm font-black text-brand-black tracking-tight cursor-pointer">Highlight this property on homepage</label>
-			</div>
-
-			<div class="md:col-span-2 pt-10">
-				<button 
-					type="submit" 
-					class="w-full bg-brand-black text-white py-6 rounded-3xl font-black uppercase tracking-widest text-xs shadow-2xl shadow-brand-black/20 hover:bg-brand-maroon transition-smooth disabled:opacity-50"
-					disabled={isSubmitting}
+			<!-- Right Column: Booking Card -->
+			<div class="lg:col-span-2">
+				<div
+					class="sticky top-28 overflow-hidden rounded-4xl border border-slate-100 bg-white p-8 text-brand-black shadow-2xl md:p-10"
 				>
-					{isSubmitting ? 'Syncing Gallery Updates...' : 'Commit Portfolio Updates'}
-				</button>
+					<div class="pointer-events-none absolute inset-0 bg-brand-maroon/2"></div>
+					<div class="relative z-10">
+						<div class="mb-6 flex items-center gap-3">
+							<div
+								class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-maroon text-white"
+							>
+								<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+									><path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+									/></svg
+								>
+							</div>
+							<h3 class="text-xl font-black">Book a Viewing</h3>
+						</div>
+
+						{#if form?.success}
+							<div
+								class="animate-in fade-in slide-in-from-top-4 mb-8 flex items-center gap-4 rounded-3xl border border-emerald-100 bg-emerald-50 p-6 text-sm font-bold text-emerald-700"
+							>
+								<div
+									class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"
+								>
+									<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"
+										><path
+											fill-rule="evenodd"
+											d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+											clip-rule="evenodd"
+										/></svg
+									>
+								</div>
+								Success! Our consultants will call you shortly.
+							</div>
+						{/if}
+
+						<form
+							method="POST"
+							action="?/book"
+							use:enhance={() => {
+								isSubmitting = true;
+								return async ({ update }) => {
+									isSubmitting = false;
+									update();
+								};
+							}}
+							class="space-y-8"
+						>
+							<div class="group relative">
+								<label
+									for="name"
+									class="transition-smooth mb-3 block text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase group-focus-within:text-brand-maroon"
+									>Full Name</label
+								>
+								<input
+									type="text"
+									id="name"
+									name="name"
+									placeholder="e.g. Samuel Mensah"
+									class="w-full rounded-4xl border border-slate-100 bg-slate-50 px-6 py-5 transition-all duration-500 outline-none focus:border-brand-maroon focus:bg-white focus:ring-0"
+									required
+								/>
+							</div>
+							<div class="group relative">
+								<label
+									for="email"
+									class="transition-smooth mb-3 block text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase group-focus-within:text-brand-maroon"
+									>Email Address</label
+								>
+								<input
+									type="email"
+									id="email"
+									name="email"
+									placeholder="e.g. sam@company.com"
+									class="w-full rounded-4xl border border-slate-100 bg-slate-50 px-6 py-5 transition-all duration-500 outline-none focus:border-brand-maroon focus:bg-white focus:ring-0"
+									required
+								/>
+							</div>
+							<div class="group relative">
+								<label
+									for="phone"
+									class="transition-smooth mb-3 block text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase group-focus-within:text-brand-maroon"
+									>Contact Number</label
+								>
+								<input
+									type="tel"
+									id="phone"
+									name="phone"
+									placeholder="e.g. +233 24 000 0000"
+									class="w-full rounded-4xl border border-slate-100 bg-slate-50 px-6 py-5 transition-all duration-500 outline-none focus:border-brand-maroon focus:bg-white focus:ring-0"
+									required
+								/>
+							</div>
+							<div class="group relative">
+								<label
+									for="date"
+									class="transition-smooth mb-3 block text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase group-focus-within:text-brand-maroon"
+									>Preferred Consultation Date</label
+								>
+								<input
+									type="date"
+									id="date"
+									name="date"
+									class="w-full rounded-4xl border border-slate-100 bg-slate-50 px-6 py-5 transition-all duration-500 outline-none focus:border-brand-maroon focus:bg-white focus:ring-0"
+									required
+								/>
+							</div>
+							<div class="group relative">
+								<label
+									for="message"
+									class="transition-smooth mb-3 block text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase group-focus-within:text-brand-maroon"
+									>Bespoke Requirements</label
+								>
+								<textarea
+									id="message"
+									name="message"
+									rows="3"
+									placeholder="Tell us about your architectural preferences..."
+									class="w-full resize-none rounded-4xl border border-slate-100 bg-slate-50 px-6 py-5 transition-all duration-500 outline-none focus:border-brand-maroon focus:bg-white focus:ring-0"
+								></textarea>
+							</div>
+
+							<button
+								type="submit"
+								class="mt-4 w-full rounded-4xl bg-brand-maroon py-6 text-[10px] font-black tracking-[0.3em] text-white uppercase shadow-2xl shadow-brand-maroon/30 transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
+								disabled={isSubmitting}
+							>
+								{isSubmitting ? 'Processing Request...' : 'Confirm Consultation'}
+							</button>
+
+							<p
+								class="mt-8 text-center text-[9px] font-bold tracking-widest text-slate-300 uppercase"
+							>
+								Privacy & Structural integrity guaranteed.
+							</p>
+						</form>
+					</div>
+				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
 
-<form 
-	action="?/deleteImage" 
-	method="POST" 
-	use:enhance={() => {
-		return async ({ update }) => {
-			update();
-		};
-	}}
-	bind:this={deleteFormElement}
-	class="hidden"
->
-	<input type="hidden" name="imageId" value={imageIdToDelete} />
-</form>
+{#if isLightboxOpen}
+	<!-- Lightbox Modal -->
+	<div 
+		class="fixed inset-0 z-100 bg-brand-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-6 md:p-12 animate-fade-in"
+		onclick={toggleLightbox}
+		onkeydown={(e) => e.key === 'Escape' && toggleLightbox()}
+		role="dialog"
+		aria-modal="true"
+		tabindex="0"
+	>
+		<!-- Close Button -->
+		<button 
+			type="button"
+			onclick={toggleLightbox}
+			class="absolute top-8 right-8 w-14 h-14 rounded-2xl bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-brand-black transition-smooth border border-white/20 z-110"
+			aria-label="Close gallery"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+		</button>
+
+		<!-- Main Image Stage -->
+		<div class="relative w-full h-full flex items-center justify-center" onclick={(e) => e.stopPropagation()} role="presentation">
+			{#key activeImageIndex}
+				<img 
+					src={allImages[activeImageIndex]} 
+					alt="Full screen view" 
+					class="max-w-full max-h-full object-contain rounded-4xl shadow-2xl animate-scale-in"
+				/>
+			{/key}
+
+			<!-- Navigation Arrows -->
+			{#if allImages.length > 1}
+				<div class="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 pointer-events-none">
+					<button 
+						type="button"
+						onclick={prevImage}
+						aria-label="Previous image"
+						class="pointer-events-auto w-16 h-16 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-brand-black transition-smooth shadow-2xl"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+					</button>
+					<button 
+						type="button"
+						onclick={nextImage}
+						aria-label="Next image"
+						class="pointer-events-auto w-16 h-16 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center hover:bg-white hover:text-brand-black transition-smooth shadow-2xl"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+					</button>
+				</div>
+			{/if}
+		</div>
+
+		<!-- Footer Info -->
+		<div class="absolute bottom-8 left-0 right-0 flex flex-col items-center gap-2 pointer-events-none">
+			<p class="text-white/40 text-[10px] font-black uppercase tracking-[0.3em]">
+				Portfolio Item {activeImageIndex + 1} of {allImages.length}
+			</p>
+			<h4 class="text-white text-lg font-black tracking-tighter uppercase">{property.title}</h4>
+		</div>
+	</div>
+{/if}
