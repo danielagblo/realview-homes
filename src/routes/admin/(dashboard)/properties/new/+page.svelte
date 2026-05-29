@@ -86,9 +86,18 @@
 				<textarea id="description" name="description" rows="5" placeholder="Detailed property description..." class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-medium text-brand-black/70 resize-none" required></textarea>
 			</div>
 
-			<div>
-				<label for="price" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Valuation (GHS)</label>
-				<input type="number" id="price" name="price" placeholder="1500000" class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-black text-brand-maroon" required />
+			<div class="grid grid-cols-3 gap-4">
+				<div class="col-span-1">
+					<label for="currency" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Currency</label>
+					<select id="currency" name="currency" class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-bold appearance-none cursor-pointer">
+						<option value="GHS" selected>GHS (GH¢)</option>
+						<option value="USD">USD ($)</option>
+					</select>
+				</div>
+				<div class="col-span-2">
+					<label for="price" class="block text-[10px] font-black uppercase tracking-widest text-brand-black/30 mb-3">Valuation</label>
+					<input type="number" id="price" name="price" placeholder="1500000" class="w-full px-6 py-5 rounded-2xl bg-brand-cream/30 border border-brand-black/5 focus:border-brand-maroon focus:bg-white outline-none transition-smooth font-black text-brand-maroon" required />
+				</div>
 			</div>
 
 			<div>
