@@ -4,10 +4,10 @@
 
 	let { data }: { data: PageData } = $props();
 
-	const formatPrice = (price: number) => {
-		return new Intl.NumberFormat('en-GH', {
+	const formatPrice = (price: number, currency: string = 'GHS') => {
+		return new Intl.NumberFormat(currency === 'USD' ? 'en-US' : 'en-GH', {
 			style: 'currency',
-			currency: 'GHS',
+			currency: currency,
 			maximumFractionDigits: 0
 		}).format(price);
 	};
@@ -94,7 +94,7 @@
 								<p class="text-sm font-bold text-brand-black/60">{property.location}</p>
 							</td>
 							<td class="px-8 py-6">
-								<p class="text-sm font-black text-brand-maroon">{formatPrice(property.price)}</p>
+								<p class="text-sm font-black text-brand-maroon">{formatPrice(property.price, property.currency)}</p>
 							</td>
 							<td class="px-8 py-6">
 								<span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border
