@@ -19,7 +19,8 @@ export const properties = pgTable('properties', {
 	imageUrl: text('image_url').notNull(),
 	isFeatured: boolean('is_featured').default(false),
 	status: text('status').notNull().default('available'), // available, sold, rented
-	type: text('type').notNull().default('sale') // sale, rental
+	type: text('type').notNull().default('sale'), // sale, rental
+	currency: text('currency').notNull().default('GHS') // GHS or USD
 });
 
 export const propertyImages = pgTable('property_images', {
