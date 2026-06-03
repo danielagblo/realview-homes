@@ -1,4 +1,18 @@
 <script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
+	import {
+		initGSAP,
+		fadeUp,
+		fadeIn,
+		slideInLeft,
+		slideInRight,
+		staggerIn,
+		parallax,
+		popIn,
+		killAll
+	} from '$lib/animations';
+
 	const services = [
 		{
 			id: 'land-sales',
@@ -50,6 +64,89 @@
 			accent: 'brand-maroon'
 		}
 	];
+
+	// Service IDs in DOM order (mirrors the `services` array order)
+	const serviceIds = [
+		'land-sales',
+		'house-rentals-sales',
+		'property-management',
+		'architecture-design'
+	];
+
+	onMount(() => {
+		if (!browser) return;
+
+		initGSAP();
+
+		// ── 1. Hero heading ──────────────────────────────────────────────────────
+		const heroHeading = document.querySelector<HTMLElement>('.max-w-3xl h2');
+		if (heroHeading) fadeUp(heroHeading, { y: 35, duration: 1 });
+
+		// ── 2. Hero border-left block ────────────────────────────────────────────
+		const heroBorder = document.querySelector<HTMLElement>('.max-w-3xl .border-l-2');
+		if (heroBorder) slideInLeft(heroBorder, { delay: 0.2, duration: 0.9, x: -50 });
+
+		// ── 3. Service rows ──────────────────────────────────────────────────────
+		serviceIds.forEach((id, i) => {
+			const row = document.getElementById(id);
+			if (!row) return;
+
+			// The flex container that holds content + image halves
+			const flexWrap = row.querySelector<HTMLElement>('.flex.flex-col');
+			if (!flexWrap) return;
+
+			const halves = flexWrap.querySelectorAll<HTMLElement>(':scope > div');
+			// halves[0] = content side, halves[1] = image side
+			const contentSide = halves[0];
+			const imageSide = halves[1];
+
+			// Even rows: content slides from left, image from right
+			// Odd rows: content slides from right, image from left (flex-row-reverse)
+			if (contentSide) {
+				if (i % 2 === 0) {
+					slideInLeft(contentSide, { duration: 0.95, x: -50 });
+				} else {
+					slideInRight(contentSide, { duration: 0.95, x: 50 });
+				}
+			}
+
+			if (imageSide) {
+				if (i % 2 === 0) {
+					slideInRight(imageSide, { duration: 0.95, x: 50 });
+				} else {
+					slideInLeft(imageSide, { duration: 0.95, x: -50 });
+				}
+			}
+
+			// Stagger feature bullet items
+			const featuresGrid = row.querySelector<HTMLElement>('.grid.grid-cols-1');
+			if (featuresGrid) {
+				staggerIn(featuresGrid, '.flex.items-center', { stagger: 0.1, y: 20, delay: 0.15 });
+			}
+		});
+
+		// ── 4. Service image parallax ────────────────────────────────────────────
+		const serviceImgs = document.querySelectorAll<HTMLElement>('section.bg-white img');
+		serviceImgs.forEach((img) => {
+			parallax(img, { speed: -40 });
+		});
+
+		// ── 5. CTA section ───────────────────────────────────────────────────────
+		const ctaSection = document.querySelector<HTMLElement>('section.bg-brand-cream');
+		if (ctaSection) {
+			const ctaHeading = ctaSection.querySelector<HTMLElement>('h2');
+			const ctaParagraph = ctaSection.querySelector<HTMLElement>('p');
+			const ctaButton = ctaSection.querySelector<HTMLElement>('a');
+
+			if (ctaHeading) fadeUp(ctaHeading, { y: 30, duration: 0.9 });
+			if (ctaParagraph) fadeIn(ctaParagraph, { delay: 0.15, duration: 0.85 });
+			if (ctaButton) popIn(ctaButton, { delay: 0.3 });
+		}
+	});
+
+	onDestroy(() => {
+		if (browser) killAll();
+	});
 </script>
 
 <svelte:head>
