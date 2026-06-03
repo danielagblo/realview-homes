@@ -82,9 +82,15 @@
 		const heroHeading = document.querySelector<HTMLElement>('.max-w-3xl h2');
 		if (heroHeading) fadeUp(heroHeading, { y: 35, duration: 1 });
 
-		// ── 2. Hero border-left block ────────────────────────────────────────────
-		const heroBorder = document.querySelector<HTMLElement>('.max-w-3xl .border-l-2');
-		if (heroBorder) slideInLeft(heroBorder, { delay: 0.2, duration: 0.9, x: -50 });
+		// ── 2. Hero border-left block & details ──────────────────────────────────
+		const heroBorder = document.querySelector<HTMLElement>('[data-anim="hero-details"]');
+		if (heroBorder) {
+			slideInLeft(heroBorder, { delay: 0.2, duration: 0.9, x: -50 });
+			const detailsKids = heroBorder.querySelectorAll(':scope > *');
+			if (detailsKids.length) {
+				fadeUp(Array.from(detailsKids), { stagger: 0.12, delay: 0.3, y: 20 });
+			}
+		}
 
 		// ── 3. Service rows ──────────────────────────────────────────────────────
 		serviceIds.forEach((id, i) => {
@@ -164,7 +170,7 @@
 			<span class="font-normal text-brand-maroon lowercase italic">precision.</span>
 		</h2>
 
-		<div class="border-l-2 border-brand-maroon/30 pl-5">
+		<div class="border-l-2 border-brand-maroon/30 pl-5" data-anim="hero-details">
 			<p class="serif mb-3 text-base font-light text-gray-700 italic">
 				Crafting environments that transcend the ordinary.
 			</p>
@@ -174,7 +180,7 @@
 			</p>
 
 			<a
-				href="#architecture"
+				href="#architecture-design"
 				class="inline-block rounded-full bg-brand-maroon px-5 py-2 text-[10px] font-bold tracking-widest text-white uppercase transition-all duration-500 hover:bg-gray-800 hover:text-white"
 			>
 				Discover More
