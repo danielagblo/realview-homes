@@ -32,7 +32,7 @@ export function fadeUp(
 			scrollTrigger: {
 				trigger: Array.isArray(el) ? (el as Element[])[0] : el,
 				start: 'top 88%',
-				once: true
+				toggleActions: 'play reverse play reverse'
 			}
 		}
 	);
@@ -56,7 +56,7 @@ export function fadeIn(
 			scrollTrigger: {
 				trigger: Array.isArray(el) ? (el as Element[])[0] : el,
 				start: 'top 88%',
-				once: true
+				toggleActions: 'play reverse play reverse'
 			}
 		}
 	);
@@ -81,7 +81,7 @@ export function slideInLeft(
 			scrollTrigger: {
 				trigger: Array.isArray(el) ? (el as Element[])[0] : el,
 				start: 'top 88%',
-				once: true
+				toggleActions: 'play reverse play reverse'
 			}
 		}
 	);
@@ -106,7 +106,7 @@ export function slideInRight(
 			scrollTrigger: {
 				trigger: Array.isArray(el) ? (el as Element[])[0] : el,
 				start: 'top 88%',
-				once: true
+				toggleActions: 'play reverse play reverse'
 			}
 		}
 	);
@@ -136,7 +136,7 @@ export function staggerIn(
 			scrollTrigger: {
 				trigger: parentEl,
 				start: 'top 85%',
-				once: true
+				toggleActions: 'play reverse play reverse'
 			}
 		}
 	);
@@ -205,7 +205,7 @@ export function popIn(
 			scrollTrigger: {
 				trigger: Array.isArray(el) ? (el as Element[])[0] : el,
 				start: 'top 88%',
-				once: true
+				toggleActions: 'play reverse play reverse'
 			}
 		}
 	);
@@ -224,7 +224,7 @@ export function revealLine(el: Element | string, opts: { delay?: number } = {}) 
 			scrollTrigger: {
 				trigger: el,
 				start: 'top 90%',
-				once: true
+				toggleActions: 'play reverse play reverse'
 			}
 		}
 	);
