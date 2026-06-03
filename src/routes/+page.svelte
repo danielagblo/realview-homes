@@ -1,7 +1,20 @@
 <script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
 	import Hero from '$lib/components/Hero.svelte';
 	import PropertyCard from '$lib/components/PropertyCard.svelte';
 	import type { PageData } from './$types';
+	import {
+		initGSAP,
+		fadeUp,
+		slideInLeft,
+		slideInRight,
+		staggerIn,
+		parallax,
+		countUp,
+		popIn,
+		killAll
+	} from '$lib/animations';
 
 	let { data }: { data: PageData } = $props();
 
@@ -94,6 +107,73 @@
 	];
 
 	let showCertificateModal = $state(false);
+
+	onMount(() => {
+		if (!browser) return;
+		initGSAP();
+
+		// ── 1. Accreditation section ───────────────────────────────────
+		const accredText = document.querySelector('[data-anim="accred-text"]');
+		const accredCard = document.querySelector('[data-anim="accred-card"]');
+		if (accredText) slideInLeft(accredText);
+		if (accredCard) slideInRight(accredCard);
+
+		// ── 2. Featured Properties section ────────────────────────────
+		const featHeading = document.querySelector('[data-anim="featured-heading"]');
+		const featGrid = document.querySelector('[data-anim="featured-grid"]');
+		if (featHeading) fadeUp(featHeading);
+		if (featGrid) {
+			const cards = featGrid.querySelectorAll(':scope > *');
+			if (cards.length) popIn(Array.from(cards), { stagger: 0.13 });
+		}
+
+		// ── 3. Founder teaser section ─────────────────────────────────
+		const founderCard = document.querySelector('.founder-teaser-card');
+		const founderText = document.querySelector('[data-anim="founder-text"]');
+		if (founderCard) parallax(founderCard, { speed: -30 });
+		if (founderText) fadeUp(founderText);
+
+		// ── 4. Brand Philosophy section ───────────────────────────────
+		const philoHeading = document.querySelector('[data-anim="philo-heading"]');
+		const philoCards = document.querySelector('[data-anim="philo-cards"]');
+		const philoImages = document.querySelector('[data-anim="philo-images"]');
+		const statEls = document.querySelectorAll('[data-anim="stat-number"]');
+
+		if (philoHeading) fadeUp(philoHeading);
+		if (philoCards) staggerIn(philoCards, ':scope > div', { stagger: 0.15 });
+		if (philoImages) staggerIn(philoImages, ':scope > div', { stagger: 0.15 });
+
+		const statTargets = [12, 450];
+		statEls.forEach((el, i) => {
+			if (statTargets[i] !== undefined) {
+				countUp(el, { target: statTargets[i], suffix: '+' });
+			}
+		});
+
+		// ── 5. Services grid ──────────────────────────────────────────
+		const servicesGrid = document.querySelector('[data-anim="services-grid"]');
+		if (servicesGrid) {
+			const cards = servicesGrid.querySelectorAll(':scope > a');
+			if (cards.length) popIn(Array.from(cards), { stagger: 0.12 });
+		}
+
+		// ── 6. Process steps ──────────────────────────────────────────
+		const stepsContainer = document.querySelector('[data-anim="process-steps"]');
+		if (stepsContainer) staggerIn(stepsContainer, ':scope > div', { stagger: 0.16, y: 30 });
+
+		// ── 7. CTA section ────────────────────────────────────────────
+		const ctaContent = document.querySelector('[data-anim="cta-content"]');
+		if (ctaContent) {
+			const ctaHeading = ctaContent.querySelector('h2');
+			const ctaButtons = ctaContent.querySelector('div.flex');
+			if (ctaHeading) fadeUp(ctaHeading);
+			if (ctaButtons) fadeUp(ctaButtons, { delay: 0.2 });
+		}
+	});
+
+	onDestroy(() => {
+		if (browser) killAll();
+	});
 </script>
 
 <svelte:head>
@@ -119,11 +199,12 @@
 >
 	<div class="container mx-auto px-6">
 		<div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
-			<div class="lg:col-span-7">
+			<!-- Left: text -->
+			<div class="lg:col-span-7" data-anim="accred-text">
 				<div class="mb-6 inline-flex items-center gap-3">
 					<span class="h-px w-8 bg-brand-maroon"></span>
 					<span class="text-[10px] font-bold tracking-[0.5em] text-brand-maroon uppercase"
-						>Accredited & Certified</span
+						>Accredited &amp; Certified</span
 					>
 				</div>
 				<h2 class="mb-8 text-4xl leading-[1.1] font-black text-brand-black md:text-5xl">
@@ -165,12 +246,12 @@
 				</div>
 			</div>
 
-			<div class="flex justify-center lg:col-span-5">
+			<!-- Right: certificate (original) -->
+			<div class="flex justify-center lg:col-span-5" data-anim="accred-card">
 				<button
 					onclick={() => (showCertificateModal = true)}
 					class="group relative w-full max-w-sm cursor-zoom-in text-left focus:outline-none"
 				>
-					<!-- Elegant Shadow & Border Frame -->
 					<div
 						class="transition-smooth absolute inset-0 rounded-3xl bg-brand-maroon/5 opacity-50 blur-2xl group-hover:opacity-100 lg:-inset-4"
 					></div>
@@ -197,11 +278,12 @@
 		</div>
 	</div>
 </section>
+
 <!-- Featured Properties -->
 <section class="relative bg-brand-cream/10 py-24">
 	<div class="container mx-auto px-6">
 		<div class="mb-16 flex flex-col items-end justify-between gap-6 md:flex-row">
-			<div class="max-w-xl">
+			<div class="max-w-xl" data-anim="featured-heading">
 				<span class="mb-4 block text-xs font-bold tracking-widest text-brand-maroon uppercase"
 					>Our Best Offers</span
 				>
@@ -235,13 +317,69 @@
 			</a>
 		</div>
 
-		<div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
+		<div class="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3" data-anim="featured-grid">
 			{#each data.featuredProperties as property}
 				<PropertyCard {property} />
 			{/each}
 		</div>
 	</div>
 </section>
+<!-- Meet the Founder Teaser -->
+<section class="relative overflow-hidden bg-brand-cream/30 py-20">
+	<div class="container mx-auto px-6">
+		<div class="founder-teaser-grid">
+			<!-- Photo side -->
+			<div class="founder-teaser-photo-wrap">
+				<div class="founder-teaser-bloom"></div>
+				<div class="founder-teaser-card group">
+					<div class="founder-teaser-accent founder-teaser-accent--tl"></div>
+					<div class="founder-teaser-accent founder-teaser-accent--br"></div>
+					<img
+						src="/images/photo_2026-06-03_14-55-11.jpg"
+						alt="Sandra Apperkon Polo – Founder & CEO of RealView Homes"
+						class="founder-teaser-img"
+					/>
+					<div class="founder-teaser-badge">
+						<div class="founder-teaser-badge__dot"></div>
+						<div>
+							<p class="founder-teaser-badge__name">Sandra Apperkon Polo</p>
+							<p class="founder-teaser-badge__role">Founder &amp; CEO</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Text side -->
+			<div class="founder-teaser-text" data-anim="founder-text">
+				<div class="mb-6 inline-flex items-center gap-3">
+					<span class="h-px w-8 bg-brand-maroon"></span>
+					<span class="text-[10px] font-bold tracking-[0.5em] text-brand-maroon uppercase">The Visionary</span>
+				</div>
+				<h2 class="mb-6 text-4xl leading-tight font-black text-brand-black md:text-5xl">
+					Meet the <span class="serif font-normal text-brand-maroon lowercase italic">Founder.</span>
+				</h2>
+				<p class="mb-4 text-lg leading-relaxed font-light text-brand-black/70">
+					With over 12 years of experience in luxury real estate, Sandra built RealView Homes
+					on a simple conviction: every Ghanaian deserves a home of elegance and integrity.
+				</p>
+				<p class="mb-10 text-base leading-relaxed font-light text-brand-black/50">
+					A GHIREB-certified broker and visionary leader, she has personally overseen 450+
+					property transactions across Ghana's fastest-growing residential hubs.
+				</p>
+				<a
+					href="/about"
+					class="inline-flex items-center gap-2 border-b-2 border-brand-maroon/20 pb-1 font-bold text-brand-maroon transition-all duration-300 hover:gap-4"
+				>
+					Read her story
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
 <!-- Brand Philosophy & Stats Section -->
 <section class="relative overflow-hidden bg-white py-20">
 	<div class="container mx-auto px-6">
@@ -253,12 +391,12 @@
 						>Our Philosophy</span
 					>
 				</div>
-				<h2 class="mb-10 text-4xl leading-[1.1] font-black text-brand-black md:text-6xl">
+				<h2 class="mb-10 text-4xl leading-[1.1] font-black text-brand-black md:text-6xl" data-anim="philo-heading">
 					Redefining the <br />
 					<span class="serif font-normal text-brand-maroon lowercase italic">Art of Living.</span>
 				</h2>
 
-				<div class="mb-12 grid max-w-2xl grid-cols-1 gap-6 md:grid-cols-2">
+				<div class="mb-12 grid max-w-2xl grid-cols-1 gap-6 md:grid-cols-2" data-anim="philo-cards">
 					<!-- Vision Card -->
 					<div
 						class="group relative overflow-hidden rounded-3xl border border-brand-maroon/10 bg-brand-cream/30 p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-maroon/5"
@@ -296,7 +434,7 @@
 
 				<div class="grid grid-cols-2 gap-12 border-t border-brand-black/5 pt-12">
 					<div>
-						<span class="mb-2 block text-4xl font-black text-brand-maroon">12+</span>
+						<span class="mb-2 block text-4xl font-black text-brand-maroon" data-anim="stat-number">12+</span>
 						<span
 							class="block text-[10px] leading-tight font-bold tracking-widest text-brand-black/40 uppercase"
 						>
@@ -304,7 +442,7 @@
 						</span>
 					</div>
 					<div>
-						<span class="mb-2 block text-4xl font-black text-brand-maroon">450+</span>
+						<span class="mb-2 block text-4xl font-black text-brand-maroon" data-anim="stat-number">450+</span>
 						<span
 							class="block text-[10px] leading-tight font-bold tracking-widest text-brand-black/40 uppercase"
 						>
@@ -318,7 +456,7 @@
 				<div
 					class="absolute -top-10 -left-10 -z-10 h-40 w-40 rounded-full bg-brand-cream opacity-50 blur-3xl"
 				></div>
-				<div class="grid grid-cols-2 gap-4">
+				<div class="grid grid-cols-2 gap-4" data-anim="philo-images">
 					<div class="space-y-4 pt-12">
 						<img
 							src="/images/philosophy-1.png"
@@ -375,7 +513,7 @@
 				</button>
 			</div>
 
-			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:w-1/2">
+			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:w-1/2" data-anim="services-grid">
 				{#each services as service}
 					<a
 						href="/services#{service.id}"
@@ -438,7 +576,7 @@
 					Your Journey to a <br />New <span class="text-brand-maroon">Home.</span>
 				</h2>
 
-				<div class="space-y-12">
+				<div class="space-y-12" data-anim="process-steps">
 					{#each steps as item}
 						<div class="group flex gap-8">
 							<div
@@ -461,7 +599,7 @@
 </section>
 
 <!-- Call to Action (Compact & Elegant) -->
-<section class="relative overflow-hidden bg-brand-cream py-12">
+<section id="cta-section" class="relative overflow-hidden bg-brand-cream py-12">
 	<div class="container mx-auto px-6 text-center">
 		<div
 			class="relative mx-auto max-w-5xl overflow-hidden rounded-[3rem] border border-brand-maroon/10 bg-white p-8 shadow-2xl md:p-16"
@@ -469,7 +607,7 @@
 			<!-- Decorative Background Elements -->
 			<div class="pointer-events-none absolute inset-0 bg-brand-maroon/2"></div>
 
-			<div class="relative z-10 mx-auto max-w-2xl">
+			<div class="relative z-10 mx-auto max-w-2xl" data-anim="cta-content">
 				<h2
 					class="mb-6 text-3xl leading-tight font-black tracking-tighter text-brand-black uppercase md:text-5xl"
 				>
@@ -550,4 +688,277 @@
 	.serif {
 		font-family: 'Playfair Display', serif;
 	}
+
+	/* ── Homepage portrait card ─────────────────────────── */
+	.hp-portrait-wrap {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		max-width: 380px;
+	}
+
+	.hp-bloom {
+		position: absolute;
+		inset: -40px;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(245, 225, 210, 0.8) 0%, transparent 70%);
+		pointer-events: none;
+	}
+
+	.hp-card {
+		position: relative;
+		width: 100%;
+		border-radius: 2.5rem;
+		overflow: visible;
+		transition: transform 0.4s ease;
+	}
+
+	.hp-card:hover {
+		transform: translateY(-6px);
+	}
+
+	/* Corner accents */
+	.hp-accent {
+		position: absolute;
+		width: 44px;
+		height: 44px;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.hp-accent--tl {
+		top: -8px;
+		left: -8px;
+		border-top: 3px solid rgba(139, 0, 0, 0.35);
+		border-left: 3px solid rgba(139, 0, 0, 0.35);
+		border-radius: 8px 0 0 0;
+	}
+
+	.hp-accent--br {
+		bottom: 52px;
+		right: -8px;
+		border-bottom: 3px solid rgba(139, 0, 0, 0.35);
+		border-right: 3px solid rgba(139, 0, 0, 0.35);
+		border-radius: 0 0 8px 0;
+	}
+
+	.hp-photo {
+		display: block;
+		width: 100%;
+		height: 460px;
+		object-fit: cover;
+		object-position: top center;
+		border-radius: 2.5rem;
+		border: 4px solid rgba(245, 235, 220, 0.7);
+		box-shadow:
+			0 24px 60px rgba(0, 0, 0, 0.12),
+			0 0 0 1px rgba(139, 0, 0, 0.06);
+		transition: box-shadow 0.4s ease;
+	}
+
+	.hp-card:hover .hp-photo {
+		box-shadow:
+			0 32px 80px rgba(0, 0, 0, 0.16),
+			0 0 0 1px rgba(139, 0, 0, 0.1);
+	}
+
+	/* Floating name badge */
+	.hp-badge {
+		position: absolute;
+		bottom: -16px;
+		left: 24px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		border: 1px solid rgba(139, 0, 0, 0.1);
+		border-radius: 100px;
+		padding: 10px 18px 10px 12px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+	}
+
+	.hp-badge__dot {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: #8b0000;
+		flex-shrink: 0;
+		box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.12);
+	}
+
+	.hp-badge__name {
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.05em;
+		color: #1a1a1a;
+		margin: 0;
+		line-height: 1.2;
+		text-transform: uppercase;
+	}
+
+	.hp-badge__role {
+		font-size: 10px;
+		color: rgba(26, 26, 26, 0.45);
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	/* View certificate button */
+	.hp-cert-btn {
+		position: absolute;
+		top: 20px;
+		right: -12px;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		background: #fff;
+		border: 1px solid rgba(139, 0, 0, 0.15);
+		border-radius: 100px;
+		padding: 8px 14px 8px 10px;
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: #8b0000;
+		cursor: pointer;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+		transition: box-shadow 0.3s, transform 0.3s;
+	}
+
+	.hp-cert-btn:hover {
+		box-shadow: 0 8px 24px rgba(139, 0, 0, 0.15);
+		transform: translateY(-2px);
+	}
+
+	/* ── Meet the Founder Teaser ─────────────────────────── */
+	.founder-teaser-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	@media (min-width: 1024px) {
+		.founder-teaser-grid {
+			grid-template-columns: 420px 1fr;
+			gap: 6rem;
+		}
+	}
+
+	.founder-teaser-photo-wrap {
+		position: relative;
+		display: flex;
+		justify-content: center;
+	}
+
+	.founder-teaser-bloom {
+		position: absolute;
+		inset: -50px;
+		border-radius: 50%;
+		background: radial-gradient(circle, rgba(245, 220, 200, 0.7) 0%, transparent 70%);
+		pointer-events: none;
+	}
+
+	.founder-teaser-card {
+		position: relative;
+		width: 100%;
+		max-width: 380px;
+		border-radius: 2.5rem;
+		overflow: visible;
+		transition: transform 0.4s ease;
+	}
+
+	.founder-teaser-card:hover {
+		transform: translateY(-6px);
+	}
+
+	.founder-teaser-accent {
+		position: absolute;
+		width: 44px;
+		height: 44px;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.founder-teaser-accent--tl {
+		top: -8px;
+		left: -8px;
+		border-top: 3px solid rgba(139, 0, 0, 0.3);
+		border-left: 3px solid rgba(139, 0, 0, 0.3);
+		border-radius: 8px 0 0 0;
+	}
+
+	.founder-teaser-accent--br {
+		bottom: 52px;
+		right: -8px;
+		border-bottom: 3px solid rgba(139, 0, 0, 0.3);
+		border-right: 3px solid rgba(139, 0, 0, 0.3);
+		border-radius: 0 0 8px 0;
+	}
+
+	.founder-teaser-img {
+		display: block;
+		width: 100%;
+		height: 480px;
+		object-fit: cover;
+		object-position: top center;
+		border-radius: 2.5rem;
+		border: 4px solid rgba(255, 255, 255, 0.8);
+		box-shadow: 0 24px 60px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(139, 0, 0, 0.05);
+		transition: box-shadow 0.4s ease;
+	}
+
+	.founder-teaser-card:hover .founder-teaser-img {
+		box-shadow: 0 32px 80px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(139, 0, 0, 0.08);
+	}
+
+	.founder-teaser-badge {
+		position: absolute;
+		bottom: -16px;
+		left: 24px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		background: rgba(255, 255, 255, 0.96);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		border: 1px solid rgba(139, 0, 0, 0.1);
+		border-radius: 100px;
+		padding: 10px 18px 10px 12px;
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+	}
+
+	.founder-teaser-badge__dot {
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: #8b0000;
+		flex-shrink: 0;
+		box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.12);
+	}
+
+	.founder-teaser-badge__name {
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.05em;
+		color: #1a1a1a;
+		margin: 0;
+		line-height: 1.2;
+		text-transform: uppercase;
+	}
+
+	.founder-teaser-badge__role {
+		font-size: 10px;
+		color: rgba(26, 26, 26, 0.45);
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	.founder-teaser-text {
+		padding-top: 1rem;
+	}
 </style>
+
