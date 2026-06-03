@@ -1,4 +1,18 @@
 <script lang="ts">
+	import { onMount, onDestroy } from 'svelte';
+	import { browser } from '$app/environment';
+	import {
+		initGSAP,
+		fadeUp,
+		slideInLeft,
+		slideInRight,
+		staggerIn,
+		popIn,
+		parallax,
+		countUp,
+		killAll
+	} from '$lib/animations';
+
 	const values = [
 		{
 			title: 'Uncompromising Precision',
@@ -16,6 +30,82 @@
 			icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'
 		}
 	];
+
+	// ── Element refs ─────────────────────────────────────────────────────────
+	// Hero left side
+	let heroEyebrow: HTMLElement;
+	let heroH1: HTMLElement;
+	let heroQuoteBlock: HTMLElement;
+	let heroStats: HTMLElement;
+
+	// Hero image (right column)
+	let heroImageWrap: HTMLElement;
+
+	// Vision & Mission cards
+	let visionCard: HTMLElement;
+	let missionCard: HTMLElement;
+
+	// Pillars grid parent
+	let pillarsGrid: HTMLElement;
+
+	// Founder
+	let founderPortraitCard: HTMLElement;
+	let founderBioHeading: HTMLElement;
+	let founderBio: HTMLElement; // the .founder-bio column
+
+	// Core Values grid
+	let coreValuesGrid: HTMLElement;
+
+	onMount(() => {
+		if (!browser) return;
+		initGSAP();
+
+		// ── 1. Hero left column ──────────────────────────────────────────────
+		fadeUp(heroEyebrow, { delay: 0.1, y: 30 });
+		fadeUp(heroH1, { delay: 0.28, y: 35 });
+		fadeUp(heroQuoteBlock, { delay: 0.48, y: 30 });
+		fadeUp(heroStats, { delay: 0.65, y: 25 });
+
+		// ── 2. Hero stat countUp (12+ and 450+) ─────────────────────────────
+		const statEls = document.querySelectorAll<HTMLElement>('.mb-1.text-3xl.font-black.text-brand-maroon');
+		if (statEls.length >= 2) {
+			countUp(statEls[0], { target: 12, suffix: '+', duration: 1.8 });
+			countUp(statEls[1], { target: 450, suffix: '+', duration: 2.0 });
+		}
+
+		// ── 3. Hero image — slideInRight + parallax ──────────────────────────
+		slideInRight(heroImageWrap, { delay: 0.35, duration: 1.0, x: 55 });
+		parallax(heroImageWrap, { speed: -35 });
+
+		// ── 4. Vision & Mission cards ────────────────────────────────────────
+		slideInLeft(visionCard, { delay: 0, duration: 0.9 });
+		slideInRight(missionCard, { delay: 0.18, duration: 0.9 });
+
+		// ── 5. Pillars of Excellence — popIn on 3 cards ──────────────────────
+		if (pillarsGrid) {
+			const pillarCards = pillarsGrid.querySelectorAll(':scope > div');
+			popIn(Array.from(pillarCards), { stagger: 0.13 });
+		}
+
+		// ── 6. Founder — portrait slideInLeft + parallax ─────────────────────
+		slideInLeft(founderPortraitCard, { delay: 0, duration: 1.0 });
+		parallax(founderPortraitCard, { speed: -25 });
+
+		// Founder bio — heading + paragraphs + stats staggered fadeUp
+		if (founderBio) {
+			const bioItems = founderBio.querySelectorAll(
+				'.founder-bio__heading, .founder-bio__body, .founder-stats'
+			);
+			fadeUp(Array.from(bioItems), { stagger: 0.15, y: 30 });
+		}
+
+		// ── 7. Core Values — staggerIn on value items ────────────────────────
+		staggerIn(coreValuesGrid, '.group.flex.flex-col', { stagger: 0.14, y: 32 });
+	});
+
+	onDestroy(() => {
+		if (browser) killAll();
+	});
 </script>
 
 <svelte:head>
@@ -34,13 +124,14 @@
 		<div class="min-h-0 h-auto lg:h-[calc(100vh-16rem)] lg:min-h-[500px] flex items-center mb-20 lg:mb-32 lg:pt-0">
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
 				<div class="relative z-10">
-					<div class="mb-6 inline-flex items-center gap-4">
+					<div bind:this={heroEyebrow} class="mb-6 inline-flex items-center gap-4">
 						<span class="h-px w-10 bg-brand-maroon"></span>
 						<span class="text-[9px] font-bold tracking-[0.4em] text-brand-maroon uppercase"
 							>The RealView Narrative</span
 						>
 					</div>
 					<h1
+						bind:this={heroH1}
 						class="mb-8 text-5xl leading-[0.95] font-black tracking-tighter text-brand-black md:text-7xl"
 					>
 						Defining <br />
@@ -49,7 +140,7 @@
 						>
 						<span class="text-brand-black/20">in Ghana.</span>
 					</h1>
-					<div class="border-l-4 border-brand-maroon/30 pl-8">
+					<div bind:this={heroQuoteBlock} class="border-l-4 border-brand-maroon/30 pl-8">
 						<p
 							class="serif mb-8 max-w-xl text-lg leading-relaxed font-light text-brand-black/80 italic md:text-xl"
 						>
@@ -60,7 +151,7 @@
 							RealView Homes bridges the gap between visionary design and master-class construction,
 							ensuring every project is a landmark of quality.
 						</p>
-						<div class="mt-10 flex items-center gap-10">
+						<div bind:this={heroStats} class="mt-10 flex items-center gap-10">
 							<div>
 								<div class="mb-1 text-3xl font-black text-brand-maroon">12+</div>
 								<div class="text-[9px] font-bold tracking-widest text-brand-black/40 uppercase">
@@ -76,7 +167,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="group relative">
+				<div bind:this={heroImageWrap} class="group relative">
 					<div
 						class="absolute inset-0 lg:-inset-10 rounded-full bg-brand-maroon/5 opacity-50 blur-[80px]"
 					></div>
@@ -113,7 +204,7 @@
 				</div>
 				<div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
 					<!-- Vision Card -->
-					<div class="relative group overflow-hidden rounded-3xl border border-brand-maroon/10 bg-brand-cream/30 p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-maroon/5">
+					<div bind:this={visionCard} class="relative group overflow-hidden rounded-3xl border border-brand-maroon/10 bg-brand-cream/30 p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-maroon/5">
 						<div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-brand-maroon/5 transition-transform duration-500 group-hover:scale-150"></div>
 						<span class="mb-4 inline-flex items-center justify-center rounded-xl bg-brand-maroon/10 px-3 py-1 text-[10px] font-bold tracking-widest text-brand-maroon uppercase">
 							Our Vision
@@ -124,7 +215,7 @@
 					</div>
 
 					<!-- Mission Card -->
-					<div class="relative group overflow-hidden rounded-3xl border border-brand-black/5 bg-brand-black/[0.02] p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-black/5">
+					<div bind:this={missionCard} class="relative group overflow-hidden rounded-3xl border border-brand-black/5 bg-brand-black/[0.02] p-8 transition-all duration-300 hover:shadow-xl hover:shadow-brand-black/5">
 						<div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-brand-black/[0.02] transition-transform duration-500 group-hover:scale-150"></div>
 						<span class="mb-4 inline-flex items-center justify-center rounded-xl bg-brand-black/10 px-3 py-1 text-[10px] font-bold tracking-widest text-brand-black uppercase">
 							Our Mission
@@ -146,7 +237,7 @@
 				<h2 class="text-4xl font-black text-brand-black md:text-5xl">Our Pillars of Excellence</h2>
 			</div>
 
-			<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+			<div bind:this={pillarsGrid} class="grid grid-cols-1 gap-8 md:grid-cols-3">
 				<div
 					class="group rounded-[3rem] border border-brand-black/5 bg-brand-cream/40 p-12 transition-all duration-500 hover:border-brand-maroon/20 hover:bg-white"
 				>
@@ -217,6 +308,94 @@
 
 
 
+		<!-- Meet the Founder -->
+		<div class="founder-section mb-40">
+			<div class="mb-16 text-center">
+				<span class="mb-4 block text-[10px] font-bold tracking-[0.6em] text-brand-maroon uppercase"
+					>The Visionary</span
+				>
+				<h2 class="text-4xl font-black text-brand-black md:text-5xl">Meet the Founder</h2>
+			</div>
+
+			<div class="founder-layout">
+				<!-- Portrait Column -->
+				<div class="founder-portrait-wrap">
+					<!-- Decorative blobs -->
+					<div class="portrait-blob portrait-blob--top"></div>
+					<div class="portrait-blob portrait-blob--bottom"></div>
+
+					<!-- Main portrait card -->
+					<div bind:this={founderPortraitCard} class="portrait-card group">
+						<!-- Accent border lines -->
+						<div class="portrait-accent portrait-accent--tl"></div>
+						<div class="portrait-accent portrait-accent--br"></div>
+
+						<img
+							src="/images/photo_2026-06-03_14-55-11.jpg"
+							alt="Founder of RealView Homes"
+							class="portrait-img"
+						/>
+
+						<!-- Floating name badge -->
+						<div class="founder-badge">
+							<div class="founder-badge__dot"></div>
+							<div>
+								<p class="founder-badge__name">Founder & CEO</p>
+								<p class="founder-badge__company">RealView Homes</p>
+							</div>
+						</div>
+
+						<!-- Experience chip -->
+						<div class="founder-chip">12+ yrs</div>
+					</div>
+				</div>
+
+				<!-- Bio Column -->
+				<div bind:this={founderBio} class="founder-bio">
+					<div class="mb-6 inline-flex items-center gap-3">
+						<span class="h-px w-8 bg-brand-maroon"></span>
+						<span class="text-[10px] font-bold tracking-[0.5em] text-brand-maroon uppercase"
+							>Leadership</span
+						>
+					</div>
+
+					<h3 class="founder-bio__heading serif">
+						"Transforming the way Ghana lives, one home at a time."
+					</h3>
+
+					<p class="founder-bio__body">
+						With over a decade of experience in luxury real estate development, our founder built
+						RealView Homes on the conviction that every Ghanaian deserves access to spaces of
+						elegance and integrity. Her relentless pursuit of architectural excellence has shaped
+						hundreds of landmark properties across the country.
+					</p>
+
+					<p class="founder-bio__body">
+						A graduate of distinguished institutions in architecture and business, she combines
+						creative vision with strategic acumen — driving RealView to the forefront of Ghana's
+						premium property market.
+					</p>
+
+					<div class="founder-stats">
+						<div class="founder-stat">
+							<span class="founder-stat__num">450+</span>
+							<span class="founder-stat__label">Projects Delivered</span>
+						</div>
+						<div class="founder-stat-divider"></div>
+						<div class="founder-stat">
+							<span class="founder-stat__num">12+</span>
+							<span class="founder-stat__label">Years Experience</span>
+						</div>
+						<div class="founder-stat-divider"></div>
+						<div class="founder-stat">
+							<span class="founder-stat__num">100%</span>
+							<span class="founder-stat__label">Client Satisfaction</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<!-- Core Values (Lucid Light Version) -->
 		<div class="border-t border-brand-black/5 py-24">
 			<div class="grid grid-cols-1 gap-20 lg:grid-cols-12">
@@ -235,7 +414,7 @@
 						surface. We build for the future, with integrity as our cornerstone.
 					</p>
 				</div>
-				<div class="grid grid-cols-1 gap-x-16 gap-y-20 md:grid-cols-2 lg:col-span-8">
+				<div bind:this={coreValuesGrid} class="grid grid-cols-1 gap-x-16 gap-y-20 md:grid-cols-2 lg:col-span-8">
 					{#each values as value}
 						<div class="group flex flex-col gap-6">
 							<div
@@ -267,5 +446,230 @@
 <style>
 	.serif {
 		font-family: 'Playfair Display', serif;
+	}
+
+	/* ── Founder Section ───────────────────────────────────── */
+	.founder-layout {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 4rem;
+		align-items: center;
+	}
+
+	@media (min-width: 1024px) {
+		.founder-layout {
+			grid-template-columns: 1fr 1fr;
+			gap: 6rem;
+		}
+	}
+
+	/* Portrait wrapper – positions decorative blobs */
+	.founder-portrait-wrap {
+		position: relative;
+		display: flex;
+		justify-content: center;
+	}
+
+	.portrait-blob {
+		position: absolute;
+		border-radius: 9999px;
+		filter: blur(70px);
+		pointer-events: none;
+	}
+
+	.portrait-blob--top {
+		top: -60px;
+		right: -40px;
+		width: 280px;
+		height: 280px;
+		background: rgba(139, 0, 0, 0.08);
+	}
+
+	.portrait-blob--bottom {
+		bottom: -40px;
+		left: -20px;
+		width: 200px;
+		height: 200px;
+		background: rgba(245, 235, 220, 0.9);
+	}
+
+	/* Main portrait card */
+	.portrait-card {
+		position: relative;
+		width: 100%;
+		max-width: 420px;
+		border-radius: 2.5rem;
+		overflow: visible;
+		transition: transform 0.4s ease;
+	}
+
+	.portrait-card:hover {
+		transform: translateY(-6px);
+	}
+
+	/* Corner accent lines */
+	.portrait-accent {
+		position: absolute;
+		width: 48px;
+		height: 48px;
+		z-index: 10;
+		pointer-events: none;
+	}
+
+	.portrait-accent--tl {
+		top: -10px;
+		left: -10px;
+		border-top: 3px solid rgba(139, 0, 0, 0.4);
+		border-left: 3px solid rgba(139, 0, 0, 0.4);
+		border-radius: 8px 0 0 0;
+	}
+
+	.portrait-accent--br {
+		bottom: 60px;
+		right: -10px;
+		border-bottom: 3px solid rgba(139, 0, 0, 0.4);
+		border-right: 3px solid rgba(139, 0, 0, 0.4);
+		border-radius: 0 0 8px 0;
+	}
+
+	/* The photo itself */
+	.portrait-img {
+		display: block;
+		width: 100%;
+		height: 520px;
+		object-fit: cover;
+		object-position: top center;
+		border-radius: 2.5rem;
+		border: 4px solid rgba(245, 235, 220, 0.6);
+		box-shadow:
+			0 30px 80px rgba(0, 0, 0, 0.15),
+			0 0 0 1px rgba(139, 0, 0, 0.08);
+		transition: box-shadow 0.4s ease;
+	}
+
+	.portrait-card:hover .portrait-img {
+		box-shadow:
+			0 40px 100px rgba(0, 0, 0, 0.2),
+			0 0 0 1px rgba(139, 0, 0, 0.14);
+	}
+
+	/* Floating name badge */
+	.founder-badge {
+		position: absolute;
+		bottom: -18px;
+		left: 28px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		background: rgba(255, 255, 255, 0.92);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		border: 1px solid rgba(139, 0, 0, 0.12);
+		border-radius: 100px;
+		padding: 10px 20px 10px 12px;
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+	}
+
+	.founder-badge__dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: #8b0000;
+		flex-shrink: 0;
+		box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.15);
+	}
+
+	.founder-badge__name {
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.05em;
+		color: #1a1a1a;
+		margin: 0;
+		line-height: 1.2;
+		text-transform: uppercase;
+	}
+
+	.founder-badge__company {
+		font-size: 10px;
+		font-weight: 400;
+		color: rgba(26, 26, 26, 0.5);
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	/* Experience chip */
+	.founder-chip {
+		position: absolute;
+		top: 24px;
+		right: -14px;
+		background: #8b0000;
+		color: #fff;
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		padding: 8px 14px;
+		border-radius: 100px;
+		box-shadow: 0 6px 24px rgba(139, 0, 0, 0.35);
+	}
+
+	/* ── Bio column ─────────────────────────────────────────── */
+	.founder-bio {
+		padding-top: 1.5rem;
+	}
+
+	.founder-bio__heading {
+		font-size: clamp(1.5rem, 3vw, 2.2rem);
+		line-height: 1.3;
+		font-weight: 400;
+		font-style: italic;
+		color: #1a1a1a;
+		margin-bottom: 1.75rem;
+	}
+
+	.founder-bio__body {
+		font-size: 0.95rem;
+		line-height: 1.85;
+		color: rgba(26, 26, 26, 0.6);
+		font-weight: 300;
+		margin-bottom: 1.25rem;
+	}
+
+	/* Stats row */
+	.founder-stats {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		margin-top: 2.5rem;
+		padding-top: 2rem;
+		border-top: 1px solid rgba(26, 26, 26, 0.06);
+	}
+
+	.founder-stat {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.founder-stat__num {
+		font-size: 1.75rem;
+		font-weight: 900;
+		color: #8b0000;
+		line-height: 1;
+	}
+
+	.founder-stat__label {
+		font-size: 9px;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: rgba(26, 26, 26, 0.4);
+	}
+
+	.founder-stat-divider {
+		width: 1px;
+		height: 36px;
+		background: rgba(26, 26, 26, 0.1);
+		flex-shrink: 0;
 	}
 </style>
