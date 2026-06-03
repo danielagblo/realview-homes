@@ -37,6 +37,20 @@
 				></span>
 			</a>
 			<a
+				href="/about"
+				class="transition-smooth group relative {$page.url.pathname === '/about'
+					? 'text-brand-maroon'
+					: 'hover:text-brand-maroon'}"
+			>
+				About Us
+				<span
+					class="absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-brand-maroon transition-transform duration-300 {$page
+						.url.pathname === '/about'
+						? 'scale-x-100'
+						: 'scale-x-0 group-hover:scale-x-100'}"
+				></span>
+			</a>
+			<a
 				href="/properties"
 				class="transition-smooth group relative {$page.url.pathname === '/properties'
 					? 'text-brand-maroon'
@@ -60,20 +74,6 @@
 				<span
 					class="absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-brand-maroon transition-transform duration-300 {$page
 						.url.pathname === '/services'
-						? 'scale-x-100'
-						: 'scale-x-0 group-hover:scale-x-100'}"
-				></span>
-			</a>
-			<a
-				href="/about"
-				class="transition-smooth group relative {$page.url.pathname === '/about'
-					? 'text-brand-maroon'
-					: 'hover:text-brand-maroon'}"
-			>
-				About Us
-				<span
-					class="absolute -bottom-1 left-0 h-0.5 w-full origin-left bg-brand-maroon transition-transform duration-300 {$page
-						.url.pathname === '/about'
 						? 'scale-x-100'
 						: 'scale-x-0 group-hover:scale-x-100'}"
 				></span>
@@ -160,6 +160,13 @@
 						: 'text-brand-black hover:text-brand-maroon'}">Home</a
 				>
 				<a
+					href="/about"
+					onclick={() => (mobileMenuOpen = false)}
+					class="transition-smooth text-4xl font-black {$page.url.pathname === '/about'
+						? 'text-brand-maroon'
+						: 'text-brand-black hover:text-brand-maroon'}">About Us</a
+				>
+				<a
 					href="/properties"
 					onclick={() => (mobileMenuOpen = false)}
 					class="transition-smooth text-4xl font-black {$page.url.pathname === '/properties'
@@ -172,13 +179,6 @@
 					class="transition-smooth text-4xl font-black {$page.url.pathname === '/services'
 						? 'text-brand-maroon'
 						: 'text-brand-black hover:text-brand-maroon'}">Services</a
-				>
-				<a
-					href="/about"
-					onclick={() => (mobileMenuOpen = false)}
-					class="transition-smooth text-4xl font-black {$page.url.pathname === '/about'
-						? 'text-brand-maroon'
-						: 'text-brand-black hover:text-brand-maroon'}">About Us</a
 				>
 				<a
 					href="/contact"
