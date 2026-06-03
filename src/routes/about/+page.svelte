@@ -672,4 +672,54 @@
 		background: rgba(26, 26, 26, 0.1);
 		flex-shrink: 0;
 	}
+
+	/* ── Mobile Responsive Adjustments ──────────────────────── */
+	@media (max-width: 640px) {
+		.founder-layout {
+			gap: 2.5rem;
+		}
+
+		.portrait-img {
+			height: 440px;
+			border-radius: 2rem;
+		}
+
+		.founder-chip {
+			right: 12px;
+			top: 16px;
+			font-size: 10px;
+			padding: 6px 12px;
+		}
+
+		.founder-badge {
+			left: 16px;
+			bottom: -12px;
+			padding: 8px 16px 8px 10px;
+		}
+
+		.founder-stats {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1.5rem 1rem;
+			justify-content: space-between;
+			margin-top: 2rem;
+			padding-top: 1.5rem;
+		}
+
+		.founder-stat-divider {
+			display: none;
+		}
+
+		.founder-stat {
+			flex: 1 1 40%;
+			align-items: center;
+			text-align: center;
+			min-width: 120px;
+		}
+
+		.founder-stat:last-child {
+			flex: 1 1 100%;
+			margin-top: 0.5rem;
+		}
+	}
 </style>
